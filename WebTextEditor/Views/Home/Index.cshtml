@@ -1,0 +1,12 @@
+﻿@section SPAViews {
+    @Html.Partial("_Home")
+    @Html.Partial("_Document")
+    @Html.Partial("_Documents")
+    <div ng-view></div>
+}
+
+@section Scripts{
+    @Scripts.Render("~/assets/js/libs")
+    @Scripts.Render("~/assets/js/editor")
+    <script src="~/signalr/hubs"></script>
+}

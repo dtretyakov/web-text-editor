@@ -1,0 +1,14 @@
+﻿<script type="text/ng-template" id="editor.documents.html">
+    
+    <div class="row">
+        <div ng-repeat="document in vm.documents" class="col-md-4">
+            <h2>{{document.name}}</h2>
+            <p>Authored: {{document.userId}}</p>
+            <p>Created: {{document.created}}</p>
+            <p>
+                <a class="btn btn-default" href="/documents/{{document.id}}">Edit document &raquo;</a>
+            </p>
+        </div>
+    </div>
+
+</script>

@@ -1,0 +1,91 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set padding to display errors that occur during databinding */
+.padding-error {
+    padding-top: 20px;
+}
+
+@media only screen and (max-width: 767px) {
+    .nofloat {
+        float: none;
+        padding: 10px 15px;
+    }
+}
+
+.bs-callout {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.bs-callout h5 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+.bottom-col {
+    float: none;
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+.editor {
+    position: relative;
+}
+
+.carets,
+.carets .cursor,
+.carets .cursor .bar,
+.carets .cursor .top {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.carets .cursor .bar {
+    width: 2px;
+}
+
+.carets .cursor .top {
+    width: 4px;
+    height: 4px;
+    left: -1px;
+}
+
+.carets .cursor .name {
+    position: absolute;
+    bottom: 0;
+    padding: 0 2px;
+    -ms-opacity: 0.9;
+    opacity: 0.9;
+    display: none;
+    color: white;
+}
+
+.carets .cursor.hover .name {
+    display: block;
+}
