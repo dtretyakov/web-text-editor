@@ -4,7 +4,7 @@
         <h1>Web Text Editor</h1>
         <p class="lead">
             Web Text Editor is an application for collaborative text editing.
-            It built on top of ASP.NET framework and uses Logoot algorithm for resolving conflicting changes between contributors.
+            It built on top of ASP.NET framework and uses CRDT for resolving conflicting changes between contributors.
         </p>
         <p>
             <a href="" ng-click="vm.addDocument()" class="btn btn-primary btn-lg">New Document &raquo;</a>
@@ -12,31 +12,34 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <h2>Your information</h2>
-            <p>This section shows how you can call ASP.NET Web API to get the user details.</p>
-            <p data-bind="text: myHometown"></p>
-
+            <h2>Server-side</h2>
+            <p>Apllication server powered by ASP.NET and uses following framework parts:</p>
+            <ul>
+                <li>MVC - for static content delivery.</li>
+                <li>Web API - for RESTful data endpoints.</li>
+                <li>SignalR - for real-time communication.</li>
+            </ul>
             <p>
-                <a class="btn btn-default" href="/documents">Documents &raquo;</a>
+                <a class="btn btn-default" href="http://www.asp.net">More about ASP.NET &raquo;</a>
             </p>
         </div>
 
         <div class="col-md-4">
-            <h2>Getting started</h2>
+            <h2>Client-side</h2>
+            <p>Client-side implemented as a Single Page Application (SPA) by leveraging AngularJS framework.</p>
+            <p>To provide responsible front-end user interface used Twitter Bootstrap framework.</p>
             <p>
-                ASP.NET Single Page Application (SPA) helps you build applications that include significant client-side interactions using HTML, CSS, and JavaScript.
-                It's now easier than ever before to getting started writing highly interactive web applications.
-            </p>
-            <p>
-                <a class="btn btn-default" href="/documents/123">Document 123 &raquo;</a>
+                <a class="btn btn-default" href="https://angularjs.org/">More about AngularJS &raquo;</a>
             </p>
         </div>
 
         <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+            <h2>CRDT</h2>
+            <p>Conflict-free Replicated Data Types (CRDTs) belongs to optimistic replication.</p>
+            <p>Apllication uses Logoot CRDT with modifications from CF-Seq/LSEQ, which use operation-based replication.</p>
+            <p>They use immutable data types (atoms) with identifiers and two operations: insert and delete.</p>
             <p>
-                <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a>
+                <a class="btn btn-default" href="http://www.loria.fr/~oster/pmwiki/uploads/Main/CF-Seq-report.pdf">More about CRDT &raquo;</a>
             </p>
         </div>
     </div>
