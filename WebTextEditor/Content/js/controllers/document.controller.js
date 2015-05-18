@@ -55,24 +55,27 @@
             vm.document = document;
             vm.content = document.content;
 
-            document.collaborators.forEach(function(collab) {
-                addOrUpdateCollaborator(collab.userId, collab.caretPosition);
+            document.collaborators.forEach(function(collaborator) {
+                addOrUpdateCollaborator(collaborator);
             });
         }
 
-        function addOrUpdateCollaborator(name, caret) {
+        function addOrUpdateCollaborator(data) {
 
-            var collaborator = vm.collaborators[name] || {
+            var id = data.connectionId;
+
+            var collaborator = vm.collaborators[id] || {
                 color: generator.getRandomColor()
             };
 
-            collaborator.caret = caret;
+            collaborator.name = data.userId;
+            collaborator.caret = data.caretPosition;
 
-            vm.collaborators[name] = collaborator;
+            vm.collaborators[id] = collaborator;
         }
 
-        function removeCollaborator(name) {
-            delete vm.collaborators[name];
+        function removeCollaborator(data) {
+            delete vm.collaborators[data.connectionId];
         }
     }
 })();

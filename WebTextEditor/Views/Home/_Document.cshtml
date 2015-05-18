@@ -12,19 +12,19 @@
         <div class="col-md-8">
             <form class="editor">
                 <textarea id="editor" class="form-control input-lg" rows="10" ng-model="vm.document.text" e-caret="caretPosition"></textarea>
-                <div class="carets" ng-repeat="(name, value) in vm.collaborators">
+                <div class="carets" ng-repeat="(id, data) in vm.collaborators">
                     <div e-input-element="#editor"
-                         e-input-caret="value.caret"
-                         e-caret-name="{{name}}"
-                         e-caret-color="{{value.color}}" />
+                         e-input-caret="data.caret"
+                         e-caret-name="{{data.name}}"
+                         e-caret-color="{{data.color}}" />
                 </div>
             </form>
         </div>
         <div class="col-md-4">
             <h3 class="nopadding">Collaborators</h3>
-            <div ng-repeat="(name, value) in vm.collaborators">
-                <div class="bs-callout" ng-style="{'border-left-color': value.color}">
-                    <h5>{{name}}</h5>
+            <div ng-repeat="(id, data) in vm.collaborators">
+                <div class="bs-callout" ng-style="{'border-left-color': data.color}">
+                    <h5>{{data.name}}</h5>
                 </div>
             </div>
         </div>

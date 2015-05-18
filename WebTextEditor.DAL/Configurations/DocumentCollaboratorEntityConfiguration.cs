@@ -9,13 +9,17 @@ namespace WebTextEditor.DAL.Configurations
         {
             ToTable("DocumentCollaborator");
 
-            HasKey(t => new {t.DocumentId, t.UserId});
+            HasKey(t => new {t.DocumentId, t.ConnectionId});
 
             Property(p => p.DocumentId)
                 .HasMaxLength(32)
                 .IsRequired();
 
             Property(p => p.UserId)
+                .HasMaxLength(128)
+                .IsRequired();
+
+            Property(p => p.ConnectionId)
                 .HasMaxLength(128)
                 .IsRequired();
         }

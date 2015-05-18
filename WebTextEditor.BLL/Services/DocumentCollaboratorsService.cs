@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using WebTextEditor.DAL.Models;
@@ -19,45 +18,37 @@ namespace WebTextEditor.BLL.Services
             _mapper = mapper;
         }
 
-        public Task AddCollaboratorAsync(string documentId, string userId)
+        public Task AddAsync(DocumentCollaborator collaborator)
         {
-            var collaborator = new DocumentCollaboratorEntity
-            {
-                DocumentId = documentId,
-                UserId = userId,
-                Updated = DateTime.UtcNow
-            };
+            var entity = _mapper.Map<DocumentCollaborator, DocumentCollaboratorEntity>(collaborator);
 
-            return _collaboratorsRepository.AddAsync(collaborator);
+            return _collaboratorsRepository.AddAsync(entity);
         }
 
-        public Task RemoveCollaboratorAsync(string documentId, string userId)
+        public Task UpdateAsync(DocumentCollaborator collaborator)
         {
-            var collaborator = new DocumentCollaboratorEntity
-            {
-                DocumentId = documentId,
-                UserId = userId
-            };
+            var entity = _mapper.Map<DocumentCollaborator, DocumentCollaboratorEntity>(collaborator);
 
-            return _collaboratorsRepository.RemoveAsync(collaborator);
+            return _collaboratorsRepository.UpdateAsync(entity);
         }
 
-        public Task SetDocumentCaretPositionAsync(string documentId, string userId, int? caretPosition)
+        public Task RemoveAsync(DocumentCollaborator collaborator)
         {
-            var collaborator = new DocumentCollaboratorEntity
-            {
-                DocumentId = documentId,
-                UserId = userId,
-                CaretPosition = caretPosition,
-                Updated = DateTime.UtcNow
-            };
+            var entity = _mapper.Map<DocumentCollaborator, DocumentCollaboratorEntity>(collaborator);
 
-            return _collaboratorsRepository.UpdateAsync(collaborator);
+            return _collaboratorsRepository.RemoveAsync(entity);
         }
 
-        public async Task<List<DocumentCollaborator>> GetCollaboratorsAsync(string documentId)
+        public async Task<List<DocumentCollaborator>> FindByDocumentAsync(string documentId)
         {
-            var collaborators = await _collaboratorsRepository.GetAllAsync(documentId);
+            var collaborators = await _collaboratorsRepository.FindByDocumentAsync(documentId);
+
+            return _mapper.Map<List<DocumentCollaboratorEntity>, List<DocumentCollaborator>>(collaborators);
+        }
+
+        public async Task<List<DocumentCollaborator>> FindByConnectionAsync(string connectionId)
+        {
+            var collaborators = await _collaboratorsRepository.FindByConnectionAsync(connectionId);
 
             return _mapper.Map<List<DocumentCollaboratorEntity>, List<DocumentCollaborator>>(collaborators);
         }

@@ -42,7 +42,7 @@ namespace WebTextEditor.BLL.Services
 
             // Gets content & collaborators
             var contentTask = _documentContentService.GetCurrentContentAsync(documentId);
-            var collaboratorsTask = _collaboratorsService.GetCollaboratorsAsync(documentId);
+            var collaboratorsTask = _collaboratorsService.FindByDocumentAsync(documentId);
 
             await Task.WhenAll(contentTask, collaboratorsTask);
 

@@ -19,10 +19,5 @@
         ///     Gets or sets a conent value.
         /// </summary>
         public char Value { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a user identifier.
-        /// </summary>
-        public string UserId { get; set; }
     }
 }

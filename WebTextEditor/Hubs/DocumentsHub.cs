@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 using WebTextEditor.BLL.Services;
 using WebTextEditor.Domain.DTO;
@@ -17,8 +18,8 @@ namespace WebTextEditor.Hubs
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="collaboratorService"></param>
-        /// <param name="contentService"></param>
+        /// <param name="collaboratorService">Collaborators services.</param>
+        /// <param name="contentService">Documents content service.</param>
         public DocumentsHub(IDocumentCollaboratorsService collaboratorService, IDocumentContentService contentService)
         {
             _collaboratorService = collaboratorService;
@@ -33,10 +34,20 @@ namespace WebTextEditor.Hubs
         {
             // Join group and notify collaborators
             var userId = Context.User.Identity.Name;
-            Clients.Group(documentId).addCollaborator(userId);
+            var connectionId = Context.ConnectionId;
 
-            await Groups.Add(Context.ConnectionId, documentId);
-            await _collaboratorService.AddCollaboratorAsync(documentId, userId);
+            await Groups.Add(connectionId, documentId);
+
+            var collaborator = new DocumentCollaborator
+            {
+                DocumentId = documentId,
+                ConnectionId = connectionId,
+                UserId = userId
+            };
+
+            await _collaboratorService.AddAsync(collaborator);
+
+            Clients.Group(documentId).addCollaborator(collaborator);
         }
 
         /// <summary>
@@ -46,11 +57,19 @@ namespace WebTextEditor.Hubs
         public async Task LeaveDocumentEditing(string documentId)
         {
             // Leave group and notify collaborators
-            var userId = Context.User.Identity.Name;
-            await Groups.Remove(Context.ConnectionId, documentId);
-            Clients.Group(documentId).removeCollaborator(userId);
+            var connectionId = Context.ConnectionId;
 
-            await _collaboratorService.RemoveCollaboratorAsync(documentId, userId);
+            await Groups.Remove(connectionId, documentId);
+
+            var collaborator = new DocumentCollaborator
+            {
+                DocumentId = documentId,
+                ConnectionId = connectionId
+            };
+
+            await _collaboratorService.RemoveAsync(collaborator);
+
+            Clients.Group(documentId).removeCollaborator(collaborator);
         }
 
         /// <summary>
@@ -61,9 +80,18 @@ namespace WebTextEditor.Hubs
         public Task SetCaretPosition(string documentId, int? caretPosition)
         {
             var userId = Context.User.Identity.Name;
-            Clients.OthersInGroup(documentId).caretPosition(userId, caretPosition);
 
-            return _collaboratorService.SetDocumentCaretPositionAsync(documentId, userId, caretPosition);
+            var collaborator = new DocumentCollaborator
+            {
+                DocumentId = documentId,
+                ConnectionId = Context.ConnectionId,
+                UserId = userId,
+                CaretPosition = caretPosition
+            };
+
+            Clients.OthersInGroup(documentId).caretPosition(collaborator);
+
+            return _collaboratorService.UpdateAsync(collaborator);
         }
 
         /// <summary>
@@ -80,7 +108,6 @@ namespace WebTextEditor.Hubs
             {
                 DocumentId = documentId,
                 Id = charId,
-                UserId = Context.User.Identity.Name,
                 Value = value
             };
 
@@ -99,11 +126,23 @@ namespace WebTextEditor.Hubs
             var content = new DocumentContent
             {
                 DocumentId = documentId,
-                Id = charId,
-                UserId = Context.User.Identity.Name
+                Id = charId
             };
 
             return _contentService.RemoveAsync(content);
+        }
+
+        public override async Task OnDisconnected(bool stopCalled)
+        {
+            var connectionId = Context.ConnectionId;
+            var collaborators = await _collaboratorService.FindByConnectionAsync(connectionId);
+
+            foreach (var collaborator in collaborators)
+            {
+                Clients.Group(collaborator.DocumentId).removeCollaborator(collaborator);
+            }
+
+            await Task.WhenAll(collaborators.Select(p => _collaboratorService.RemoveAsync(p)));
         }
     }
 }

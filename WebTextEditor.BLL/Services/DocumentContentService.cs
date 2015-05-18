@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -23,7 +22,6 @@ namespace WebTextEditor.BLL.Services
         public Task AddAsync(DocumentContent content)
         {
             var entity = _mapper.Map<DocumentContent, DocumentContentEntity>(content);
-            entity.Date = DateTime.UtcNow;
 
             return _contentRepository.AddAsync(entity);
         }
@@ -37,14 +35,9 @@ namespace WebTextEditor.BLL.Services
 
         public async Task<Dictionary<string, char>> GetCurrentContentAsync(string documentId)
         {
-            var contents = await _contentRepository.GetAllAsync(documentId);
+            var content = await _contentRepository.GetAllAsync(documentId);
 
-            // Select visible document content
-            var current = contents.GroupBy(p => p.Id)
-                .Where(p => p.Count() == 1)
-                .Select(p => p.First());
-
-            return current.ToDictionary(p => p.Id, p => p.Value);
+            return content.ToDictionary(p => p.Id, p => p.Value);
         }
     }
 }

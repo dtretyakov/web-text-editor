@@ -28,10 +28,17 @@ namespace WebTextEditor.DAL.Repositories
         Task UpdateAsync(DocumentCollaboratorEntity collaborator);
 
         /// <summary>
-        ///     Retrieves a list of collaborators.
+        ///     Retrieves a list of collaborators by document identifier.
         /// </summary>
         /// <param name="documentId">Document identifier.</param>
         /// <returns>Collaborators.</returns>
-        Task<List<DocumentCollaboratorEntity>> GetAllAsync(string documentId);
+        Task<List<DocumentCollaboratorEntity>> FindByDocumentAsync(string documentId);
+
+        /// <summary>
+        ///     Retrieves a collaborator by connection identifier.
+        /// </summary>
+        /// <param name="connectionId">Connection identifier.</param>
+        /// <returns>Collaborator.</returns>
+        Task<List<DocumentCollaboratorEntity>> FindByConnectionAsync(string connectionId);
     }
 }

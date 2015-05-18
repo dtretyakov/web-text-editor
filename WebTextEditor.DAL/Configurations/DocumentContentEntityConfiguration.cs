@@ -19,10 +19,6 @@ namespace WebTextEditor.DAL.Configurations
                     new IndexAnnotation(new IndexAttribute()));
 
             Property(p => p.Id)
-                .HasMaxLength(32)
-                .IsRequired();
-
-            Property(p => p.UserId)
                 .HasMaxLength(128)
                 .IsRequired();
         }

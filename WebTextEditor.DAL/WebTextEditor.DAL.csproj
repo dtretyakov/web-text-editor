@@ -60,6 +60,14 @@
     <Compile Include="Migrations\201505171413466_DocumentModels.Designer.cs">
       <DependentUpon>201505171413466_DocumentModels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505182209014_DocumentCollaborator.cs" />
+    <Compile Include="Migrations\201505182209014_DocumentCollaborator.Designer.cs">
+      <DependentUpon>201505182209014_DocumentCollaborator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505182238230_DocumentContent.cs" />
+    <Compile Include="Migrations\201505182238230_DocumentContent.Designer.cs">
+      <DependentUpon>201505182238230_DocumentContent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DocumentCollaboratorEntity.cs" />
     <Compile Include="Models\DocumentContentEntity.cs" />
@@ -82,6 +90,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505171413466_DocumentModels.resx">
       <DependentUpon>201505171413466_DocumentModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505182209014_DocumentCollaborator.resx">
+      <DependentUpon>201505182209014_DocumentCollaborator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505182238230_DocumentContent.resx">
+      <DependentUpon>201505182238230_DocumentContent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -255,6 +255,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\DocumentsHub.cs" />
+    <Compile Include="Infrastructure\SignalrContractResolver.cs" />
     <Compile Include="Infrastructure\SimpleInjectorResolver.cs" />
     <Compile Include="Infrastructure\CustomExceptionHandler.cs" />
     <Compile Include="Models\AccountViewModels.cs" />

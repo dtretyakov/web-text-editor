@@ -23,8 +23,16 @@
         }
 
         function parseTokenFromUrl(url) {
-            var match = url.match(/access_token=([^&]+)/);
-            return match && match.length === 2 ? match[1] : undefined;
+            var match,
+                pl = /\+/g, // Regex for replacing addition symbol with a space
+                search = /([^\/&=]+)=?([^&]*)/g,
+                decode = function(s) { return decodeURIComponent(s.replace(pl, " ")); };
+
+            var urlParams = {};
+            while ((match = search.exec(url)))
+                urlParams[decode(match[1])] = decode(match[2]);
+
+            return urlParams;
         }
     }
 })();

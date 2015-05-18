@@ -9,11 +9,19 @@ namespace WebTextEditor.DAL.Repositories
 {
     public sealed class DocumentCollaboratorsRepository : IDocumentCollaboratorsRepository
     {
-        public async Task<List<DocumentCollaboratorEntity>> GetAllAsync(string documentId)
+        public async Task<List<DocumentCollaboratorEntity>> FindByDocumentAsync(string documentId)
         {
             using (var db = new DataContext())
             {
                 return await db.DocumentCollaborators.Where(p => p.DocumentId == documentId).ToListAsync();
+            }
+        }
+
+        public async Task<List<DocumentCollaboratorEntity>> FindByConnectionAsync(string connectionId)
+        {
+            using (var db = new DataContext())
+            {
+                return await db.DocumentCollaborators.Where(p => p.ConnectionId == connectionId).ToListAsync();
             }
         }
 

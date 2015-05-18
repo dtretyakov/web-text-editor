@@ -632,8 +632,8 @@
             <summary>
                 Constructor.
             </summary>
-            <param name="collaboratorService"></param>
-            <param name="contentService"></param>
+            <param name="collaboratorService">Collaborators services.</param>
+            <param name="contentService">Documents content service.</param>
         </member>
         <member name="M:WebTextEditor.Hubs.DocumentsHub.JoinDocumentEditing(System.String)">
             <summary>
@@ -668,6 +668,16 @@
             </summary>
             <param name="documentId">Document identifier.</param>
             <param name="charId">Character identifier.</param>
+        </member>
+        <member name="T:WebTextEditor.Infrastructure.SignalrContractResolver">
+            <summary>
+                Camel case contract resolver for SignalR.
+            </summary>
+        </member>
+        <member name="M:WebTextEditor.Infrastructure.SignalrContractResolver.#ctor">
+            <summary>
+                Constructor.
+            </summary>
         </member>
         <member name="T:WebTextEditor.Infrastructure.SimpleInjectorResolver">
             <summary>
