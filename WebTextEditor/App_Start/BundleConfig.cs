@@ -1,4 +1,5 @@
-﻿using System.Web.Optimization;
+﻿using System.Linq;
+using System.Web.Optimization;
 
 namespace WebTextEditor
 {
@@ -13,6 +14,9 @@ namespace WebTextEditor
         /// <param name="bundles">Bundles.</param>
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Clear();
+            bundles.ResetAll();
+
             bundles.Add(new ScriptBundle("~/assets/js/libs").Include(
                 "~/scripts/angular.js",
                 "~/scripts/angular-route.js",
