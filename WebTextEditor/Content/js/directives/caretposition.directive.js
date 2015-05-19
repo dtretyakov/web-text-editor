@@ -17,47 +17,41 @@
         function link(scope, element) {
             if (!scope.eCaret) scope.eCaret = {};
 
-            element.on("keydown keyup click focus", function () {
-                scope.$apply(function () {
-                    scope.eCaret.get = getPos(element[0]);
-                });
+            element.on("keydown keyup mousedown mouseup", updatePosition);
+
+            element.on("focus", function() {
+                element.on("mousemove", updatePosition);
             });
 
             element.on("blur", function () {
+                element.off("mousemove", updatePosition);
                 //scope.$apply(function () {
                 //    scope.eCaret.get = undefined;
                 //});
             });
 
-            scope.$watch("eCaret.set", function (newVal) {
-                if (typeof newVal === "undefined") return;
-                setPos(element[0], newVal);
-            });
-        }
-
-        function getPos(element) {
-            if ("selectionStart" in element) {
-                return element.selectionStart;
-            } else if (document.selection) {
-                element.focus();
-                var sel = document.selection.createRange();
-                var selLen = document.selection.createRange().text.length;
-                sel.moveStart("character", -element.value.length);
-                return sel.text.length - selLen;
+            function updatePosition() {
+                scope.$apply(function () {
+                    scope.eCaret.start = getSelectionStart(element[0]);
+                    scope.eCaret.end = getSelectionEnd(element[0]);
+                });
             }
-            return undefined;
-        }
 
-        function setPos(element, caretPos) {
-            if (element.createTextRange) {
-                var range = element.createTextRange();
-                range.move("character", caretPos);
-                range.select();
-            } else {
-                element.focus();
-                if (element.selectionStart !== undefined) {
-                    element.setSelectionRange(caretPos, caretPos);
-                }
+            function getSelectionStart(input) {
+                if (input.createTextRange) {
+                    var r = document.selection.createRange().duplicate();
+                    r.moveEnd("character", input.value.length);
+                    if (r.text === "") return input.value.length;
+                    return input.value.lastIndexOf(r.text);
+                } else return input.selectionStart;
+            }
+
+            function getSelectionEnd(input) {
+                if (input.createTextRange) {
+                    var r = document.selection.createRange().duplicate();
+                    r.moveStart("character", -input.value.length);
+                    return r.text.length;
+                } else return input.selectionEnd;
             }
         }
     }

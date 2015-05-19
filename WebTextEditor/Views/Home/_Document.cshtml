@@ -5,7 +5,7 @@
             <h2>{{vm.document.name}}</h2>
         </div>
         <div class="col-md-4">
-            <h4>Caret position: {{caretPosition.get}}</h4>
+            <h4>Caret position: {{caretPosition.start}} - {{caretPosition.end}}</h4>
         </div>
     </div>
     <div class="row">
@@ -14,7 +14,7 @@
                 <textarea id="editor" class="form-control input-lg" rows="10" ng-bind="vm.text.str" e-caret="caretPosition"></textarea>
                 <div class="carets" ng-repeat="(id, data) in vm.collaborators">
                     <div e-input-element="#editor"
-                         e-input-caret="data.caret"
+                         e-input-caret="$parent.caretPosition.start"
                          e-caret-name="{{data.name}}"
                          e-caret-color="{{data.color}}" />
                 </div>

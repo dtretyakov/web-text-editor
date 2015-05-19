@@ -10,9 +10,9 @@
     function inputCaret(caretCoordinates) {
 
         var template = "<div class='cursor'>" +
-            "<div class='bar' ng-style='{background: value.color}'>&nbsp;</div>" +
-            "<div class='top' ng-style='{background: value.color}'></div>" +
-            "<div class='name' ng-style='{background: value.color}'>{{name}}</div>" +
+            "<div class='bar' ng-style='{background: data.color}'>&nbsp;</div>" +
+            "<div class='top' ng-style='{background: data.color}'></div>" +
+            "<div class='name' ng-style='{background: data.color}'>{{data.name}}</div>" +
             "</div>";
 
         return {

@@ -45,9 +45,9 @@ namespace WebTextEditor.Hubs
                 UserId = userId
             };
 
-            await _collaboratorService.AddAsync(collaborator);
-
             Clients.Group(documentId).addCollaborator(collaborator);
+
+            await _collaboratorService.AddAsync(collaborator);
         }
 
         /// <summary>
