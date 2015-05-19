@@ -20,6 +20,9 @@ namespace WebTextEditor
                 "~/scripts/angular-animate.js",
                 "~/scripts/toastr.js",
                 "~/scripts/jquery.signalR-{version}.js",
+                "~/scripts/EventEmitter.js",
+                "~/scripts/logoot.js",
+                "~/scripts/logoot-text.js",
                 "~/scripts/textarea-caret-position.js"));
 
             bundles.Add(new ScriptBundle("~/assets/js/editor").Include(

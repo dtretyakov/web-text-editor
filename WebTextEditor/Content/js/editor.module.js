@@ -16,6 +16,8 @@
         ])
         .constant("$", window.$)
         .constant("toastr", window.toastr)
-        .constant("caretCoordinates", window.getCaretCoordinates);
+        .constant("caretCoordinates", window.getCaretCoordinates)
+        .constant("Logoot", window.Logoot)
+        .constant("LogootText", window.LogootText);
 
 })();

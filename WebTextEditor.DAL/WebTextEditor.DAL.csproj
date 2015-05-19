@@ -68,6 +68,10 @@
     <Compile Include="Migrations\201505182238230_DocumentContent.Designer.cs">
       <DependentUpon>201505182238230_DocumentContent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505190020253_Documents.cs" />
+    <Compile Include="Migrations\201505190020253_Documents.Designer.cs">
+      <DependentUpon>201505190020253_Documents.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DocumentCollaboratorEntity.cs" />
     <Compile Include="Models\DocumentContentEntity.cs" />
@@ -96,6 +100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505182238230_DocumentContent.resx">
       <DependentUpon>201505182238230_DocumentContent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505190020253_Documents.resx">
+      <DependentUpon>201505190020253_Documents.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

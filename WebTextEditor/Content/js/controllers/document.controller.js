@@ -10,16 +10,21 @@
         "generatorFactory",
         "documentsService",
         "documentsHubService",
-        "$routeParams"
+        "$routeParams",
+        "Logoot",
+        "LogootText"
     ];
 
-    function DocumentController($scope, generator, documentsService, documentsHubService, $routeParams) {
+    function DocumentController(
+        $scope, generator, documentsService, documentsHubService,
+        $routeParams, Logoot, LogootText) {
 
         var vm = this;
 
         vm.document = undefined;
         vm.collaborators = {};
         vm.content = {};
+        vm.text = new LogootText("agent");
 
         var documentId = $routeParams.documentId;
 
