@@ -72,6 +72,18 @@
     <Compile Include="Migrations\201505190020253_Documents.Designer.cs">
       <DependentUpon>201505190020253_Documents.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505192322220_DocumentContentValue.cs" />
+    <Compile Include="Migrations\201505192322220_DocumentContentValue.Designer.cs">
+      <DependentUpon>201505192322220_DocumentContentValue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505200026105_DocumentContentIndices.cs" />
+    <Compile Include="Migrations\201505200026105_DocumentContentIndices.Designer.cs">
+      <DependentUpon>201505200026105_DocumentContentIndices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505200217515_DocumentCollaboratorAutoIncrement.cs" />
+    <Compile Include="Migrations\201505200217515_DocumentCollaboratorAutoIncrement.Designer.cs">
+      <DependentUpon>201505200217515_DocumentCollaboratorAutoIncrement.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DocumentCollaboratorEntity.cs" />
     <Compile Include="Models\DocumentContentEntity.cs" />
@@ -103,6 +115,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505190020253_Documents.resx">
       <DependentUpon>201505190020253_Documents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505192322220_DocumentContentValue.resx">
+      <DependentUpon>201505192322220_DocumentContentValue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505200026105_DocumentContentIndices.resx">
+      <DependentUpon>201505200026105_DocumentContentIndices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505200217515_DocumentCollaboratorAutoIncrement.resx">
+      <DependentUpon>201505200217515_DocumentCollaboratorAutoIncrement.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

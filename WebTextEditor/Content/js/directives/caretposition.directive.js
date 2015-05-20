@@ -25,9 +25,6 @@
 
             element.on("blur", function () {
                 element.off("mousemove", updatePosition);
-                //scope.$apply(function () {
-                //    scope.eCaret.get = undefined;
-                //});
             });
 
             function updatePosition() {

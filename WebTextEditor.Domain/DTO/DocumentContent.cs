@@ -18,6 +18,6 @@
         /// <summary>
         ///     Gets or sets a conent value.
         /// </summary>
-        public char Value { get; set; }
+        public string Value { get; set; }
     }
 }

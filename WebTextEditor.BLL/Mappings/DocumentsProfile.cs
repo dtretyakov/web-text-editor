@@ -12,6 +12,7 @@ namespace WebTextEditor.BLL.Mappings
             CreateMap<Document, DocumentEntity>();
             CreateMap<DocumentEntity, DocumentState>();
             CreateMap<DocumentContentEntity, DocumentContent>();
+            CreateMap<DocumentContent, DocumentContentEntity>();
             CreateMap<DocumentCollaboratorEntity, DocumentCollaborator>();
             CreateMap<DocumentCollaborator, DocumentCollaboratorEntity>();
         }

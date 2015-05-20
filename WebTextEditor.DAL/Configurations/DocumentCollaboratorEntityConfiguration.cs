@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.ModelConfiguration;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
 using WebTextEditor.DAL.Models;
 
 namespace WebTextEditor.DAL.Configurations
@@ -10,6 +11,9 @@ namespace WebTextEditor.DAL.Configurations
             ToTable("DocumentCollaborator");
 
             HasKey(t => new {t.DocumentId, t.ConnectionId});
+
+            Property(p => p.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             Property(p => p.DocumentId)
                 .HasMaxLength(32)

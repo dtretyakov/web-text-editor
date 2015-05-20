@@ -30,7 +30,7 @@ namespace WebTextEditor.Hubs
         ///     Adds a new document collaborator.
         /// </summary>
         /// <param name="documentId">Document identifier.</param>
-        public async Task JoinDocumentEditing(string documentId)
+        public async Task JoinDocument(string documentId)
         {
             // Join group and notify collaborators
             var userId = Context.User.Identity.Name;
@@ -54,7 +54,7 @@ namespace WebTextEditor.Hubs
         ///     Removes a document collaborator.
         /// </summary>
         /// <param name="documentId">Document identifier.</param>
-        public async Task LeaveDocumentEditing(string documentId)
+        public async Task LeaveDocument(string documentId)
         {
             // Leave group and notify collaborators
             var connectionId = Context.ConnectionId;
@@ -77,7 +77,7 @@ namespace WebTextEditor.Hubs
         /// </summary>
         /// <param name="documentId">Document identifier.</param>
         /// <param name="caretPosition">Caret position.</param>
-        public Task SetCaretPosition(string documentId, int? caretPosition)
+        public Task SetCaret(string documentId, int? caretPosition)
         {
             var userId = Context.User.Identity.Name;
 
@@ -100,9 +100,9 @@ namespace WebTextEditor.Hubs
         /// <param name="documentId">Document identifier.</param>
         /// <param name="charId">Charater identifier.</param>
         /// <param name="value">Character value.</param>
-        public Task AddCharacter(string documentId, string charId, char value)
+        public Task AddChar(string documentId, string charId, string value)
         {
-            Clients.Others.insertCharater(charId, value);
+            Clients.Others.addChar(charId, value);
 
             var content = new DocumentContent
             {
@@ -119,9 +119,9 @@ namespace WebTextEditor.Hubs
         /// </summary>
         /// <param name="documentId">Document identifier.</param>
         /// <param name="charId">Character identifier.</param>
-        public Task RemoveCharacter(string documentId, string charId)
+        public Task RemoveChar(string documentId, string charId)
         {
-            Clients.OthersInGroup(documentId).deleteCharacter(charId);
+            Clients.OthersInGroup(documentId).removeChar(charId);
 
             var content = new DocumentContent
             {

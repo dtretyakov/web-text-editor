@@ -9,8 +9,9 @@ namespace WebTextEditor.DAL.Configurations
     {
         public DocumentEntityConfiguration()
         {
-            ToTable("Document")
-                .HasKey(p => p.Id);
+            ToTable("Document");
+
+            HasKey(p => p.Id);
 
             Property(p => p.Id)
                 .HasMaxLength(32);

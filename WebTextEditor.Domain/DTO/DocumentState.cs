@@ -15,6 +15,6 @@ namespace WebTextEditor.Domain.DTO
         /// <summary>
         ///     Gets or sets a document content in logoot representation.
         /// </summary>
-        public Dictionary<string, char> Content { get; set; }
+        public Dictionary<string, string> Content { get; set; }
     }
 }

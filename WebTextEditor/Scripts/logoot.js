@@ -33,12 +33,12 @@
      */
     Logoot.prototype.ins = function(id, atom, agent, insertAfter) {
         var ids = this.ids;
-        if (arguments.length === 3) {
+        if (!insertAfter) {
             insertAfter = indexOfGreatestLessThan(ids, id, compare);
         }
         ids.splice(insertAfter + 1, 0, id);
         this.atoms[hashId(id)] = atom;
-        if (arguments.length === 3) {
+        if (arguments.length < 4) {
             this.emit("ins", insertAfter, atom);
         }
         return ["ins", id, atom, agent];
@@ -59,7 +59,7 @@
         indexOfId || (indexOfId = indexOf(ids, id, compare));
         ids.splice(indexOfId, 1);
         delete this.atoms[hashId(id)];
-        if (arguments.length === 2) {
+        if (arguments.length < 3) {
             this.emit("del", indexOfId - 1);
         }
         return ["del", id, agent];
@@ -165,24 +165,24 @@
      * @return {Number} -1 if a < b; 1 if a > b; 0 if a == b
      */
     function compare(a, b) {
-        var longerId = (a.length > b.length) ? a : b;
-        var shorterId = (a === longerId) ? b : a;
+        var depth = Math.max(a.length, b.length);
+        var ai, bi, as, bs;
 
-        var shortInt,
-            shortAgent,
-            longInt,
-            longAgent;
-        for (var i = 0, l = longerId.length; i < l; i++) {
-            shortInt = shorterId[i];
-            longInt = longerId[i];
-            if ((typeof shortInt === "undefined") || shortInt < longInt) return -1;
-            if (shortInt > longInt) return 1;
-            // else shortInt === longInt
-            shortAgent = shorterId[i + 1];
-            longAgent = longerId[i + 1];
-            if (shortAgent < longAgent) return -1;
-            if (shortAgent > longAgent) return 1;
+        for (var i = 0; i < depth; i += 2) {
+            ai = a[i];
+            bi = b[i];
+            as = a[i + 1];
+            bs = b[i + 1];
+
+            if (typeof ai == "undefined") return -1;
+            if (typeof bi == "undefined") return 1;
+            if (ai < bi) return -1;
+            if (ai > bi) return 1;
+
+            if (as < bs) return -1;
+            if (as > bs) return 1;
         }
+
         return 0;
     }
 
@@ -199,6 +199,7 @@
     /**
      * Exports logoot.
      */
+    Logoot.compare = compare;
     window["Logoot"] = Logoot;
 
 })(EventEmitter, window);

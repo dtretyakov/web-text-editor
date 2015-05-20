@@ -33,7 +33,7 @@ namespace WebTextEditor.BLL.Services
             return _contentRepository.RemoveAsync(entity);
         }
 
-        public async Task<Dictionary<string, char>> GetCurrentContentAsync(string documentId)
+        public async Task<Dictionary<string, string>> GetCurrentContentAsync(string documentId)
         {
             var content = await _contentRepository.GetAllAsync(documentId);
 

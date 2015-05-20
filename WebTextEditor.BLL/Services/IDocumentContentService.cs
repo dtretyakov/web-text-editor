@@ -23,6 +23,6 @@ namespace WebTextEditor.BLL.Services
         /// </summary>
         /// <param name="documentId">Document identifier.</param>
         /// <returns>Content.</returns>
-        Task<Dictionary<string, char>> GetCurrentContentAsync(string documentId);
+        Task<Dictionary<string, string>> GetCurrentContentAsync(string documentId);
     }
 }

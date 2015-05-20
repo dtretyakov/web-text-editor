@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Infrastructure.Annotations;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
 using WebTextEditor.DAL.Models;
 
 namespace WebTextEditor.DAL.Configurations
@@ -11,15 +9,18 @@ namespace WebTextEditor.DAL.Configurations
         {
             ToTable("DocumentContent");
 
+            HasKey(p => new {p.DocumentId, p.Id});
+
             Property(p => p.DocumentId)
                 .HasMaxLength(32)
-                .IsRequired()
-                .HasColumnAnnotation(
-                    IndexAnnotation.AnnotationName,
-                    new IndexAnnotation(new IndexAttribute()));
+                .IsRequired();
 
             Property(p => p.Id)
-                .HasMaxLength(128)
+                .HasMaxLength(900)
+                .IsRequired();
+
+            Property(p => p.Value)
+                .HasMaxLength(1)
                 .IsRequired();
         }
     }

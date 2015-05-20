@@ -635,26 +635,26 @@
             <param name="collaboratorService">Collaborators services.</param>
             <param name="contentService">Documents content service.</param>
         </member>
-        <member name="M:WebTextEditor.Hubs.DocumentsHub.JoinDocumentEditing(System.String)">
+        <member name="M:WebTextEditor.Hubs.DocumentsHub.JoinDocument(System.String)">
             <summary>
                 Adds a new document collaborator.
             </summary>
             <param name="documentId">Document identifier.</param>
         </member>
-        <member name="M:WebTextEditor.Hubs.DocumentsHub.LeaveDocumentEditing(System.String)">
+        <member name="M:WebTextEditor.Hubs.DocumentsHub.LeaveDocument(System.String)">
             <summary>
                 Removes a document collaborator.
             </summary>
             <param name="documentId">Document identifier.</param>
         </member>
-        <member name="M:WebTextEditor.Hubs.DocumentsHub.SetCaretPosition(System.String,System.Nullable{System.Int32})">
+        <member name="M:WebTextEditor.Hubs.DocumentsHub.SetCaret(System.String,System.Nullable{System.Int32})">
             <summary>
                 Notifies group members about new caret position.
             </summary>
             <param name="documentId">Document identifier.</param>
             <param name="caretPosition">Caret position.</param>
         </member>
-        <member name="M:WebTextEditor.Hubs.DocumentsHub.AddCharacter(System.String,System.String,System.Char)">
+        <member name="M:WebTextEditor.Hubs.DocumentsHub.AddChar(System.String,System.String,System.String)">
             <summary>
                 Notifies group members about new document charater.
             </summary>
@@ -662,7 +662,7 @@
             <param name="charId">Charater identifier.</param>
             <param name="value">Character value.</param>
         </member>
-        <member name="M:WebTextEditor.Hubs.DocumentsHub.RemoveCharacter(System.String,System.String)">
+        <member name="M:WebTextEditor.Hubs.DocumentsHub.RemoveChar(System.String,System.String)">
             <summary>
                 Notifies group members about document charater deletion.
             </summary>

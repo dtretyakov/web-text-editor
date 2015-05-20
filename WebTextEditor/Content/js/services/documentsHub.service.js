@@ -30,15 +30,22 @@
             documentsHub.client.caretPosition = function () {
                 executeFunction(clientFunctions.caretPosition, arguments);
             }
+            documentsHub.client.addChar = function () {
+                executeFunction(clientFunctions.addChar, arguments);
+            };
+            documentsHub.client.removeChar = function () {
+                executeFunction(clientFunctions.removeChar, arguments);
+            };
 
-            $.connection.hub.start().done(function () {
+            $.connection.hub.start().done(function (connection) {
 
                 var result = {
-                    joinDocumentEditing: documentsHub.server.joinDocumentEditing,
-                    leaveDocumentEditing: documentsHub.server.leaveDocumentEditing,
-                    setCaretPosition: documentsHub.server.setCaretPosition,
-                    addCharacter: documentsHub.server.addCharacter,
-                    removeCharacter: documentsHub.server.removeCharacter
+                    connectionId: connection.id,
+                    joinDocument: documentsHub.server.joinDocument,
+                    leaveDocument: documentsHub.server.leaveDocument,
+                    setCaret: documentsHub.server.setCaret,
+                    addChar: documentsHub.server.addChar,
+                    removeChar: documentsHub.server.removeChar
                 };
 
                 deferred.resolve(result);
