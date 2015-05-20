@@ -8,7 +8,7 @@
      * @param @optional {Object} atoms
      * @param @optional {Array} ids
      */
-    function Logoot(atoms, ids) {
+    function Logoot(atoms) {
         EventEmitter.apply(this);
 
         // this.atoms contains the contents that compose your linear data. this.atoms
@@ -17,7 +17,8 @@
 
         // this.ids is an ordered index of atom ids. If has pseudo-atoms FIRST and
         // LAST to denote the begining and ending boundaries of our linear data.
-        this.ids = ids || [FIRST, LAST];
+        var ids = getIdentifiers(this.atoms);
+        this.ids = ids.length > 0 ? ids : [FIRST, LAST];
     }
 
     Logoot.prototype = Object.create(EventEmitter.prototype);
@@ -70,8 +71,12 @@
      *
      * @param {Array} op can be either ['ins', id, line, agent] or ['del', id, agent]
      */
-    Logoot.prototype.applyOp = function(op) {
-        this[op[0]].apply(this, op.slice(1));
+    Logoot.prototype.applyOp = function (op) {
+        var args = op.slice(1);
+        if (typeof args[0] == "string") {
+            args[0] = deserializeId(args[0]);
+        }
+        this[op[0]].apply(this, args);
     };
 
     /**
@@ -197,9 +202,31 @@
     }
 
     /**
+     * Returns a list of composite identifiers from atoms.
+     *
+     * @param {Object} atoms
+     * @return {Array}
+     */
+    function getIdentifiers(atoms) {
+        return Object.keys(atoms).map(function(key) {
+            return deserializeId(key);
+        }).sort(compare);
+    }
+
+    /**
+    * Returns a deserialized id value.
+    *
+    * @param {String} id - identifier.
+    */
+    function deserializeId(id) {
+        return id.split(".").map(function(val, i) {
+            return i % 2 === 0 ? parseInt(val) : val;
+        });
+    }
+
+    /**
      * Exports logoot.
      */
-    Logoot.compare = compare;
     window["Logoot"] = Logoot;
 
 })(EventEmitter, window);

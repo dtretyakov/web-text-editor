@@ -81,13 +81,8 @@
             vm.document = document;
             var agentId = findAgentId(document.collaborators, vm.connectionId);
 
-            // Deserialize composite ids
-            var ids = Object.keys(document.content).map(function(key) {
-                return deserializeId(key);
-            }).sort(Logoot.compare);
-
             // Construct CRDT
-            var logoot = new Logoot(document.content, ids);
+            var logoot = new Logoot(document.content);
             text = new LogootText(agentId, logoot);
             text.on("logoot.op", sendOperation);
 
@@ -243,8 +238,7 @@
          * @param {string} value - character.
          */
         function addChar(id, value) {
-            var key = deserializeId(id);
-            text.applyOp(["ins", key, value]);
+            text.applyOp(["ins", id, value]);
 
             vm.text = text.str;
         }
@@ -254,21 +248,10 @@
          * @param {string} id - identifier.
          */
         function removeChar(id) {
-            var key = deserializeId(id);
-            text.applyOp(["del", key]);
+            text.applyOp(["del", id]);
 
             vm.text = text.str;
             vm.caret.start = Math.min(vm.caret.start, vm.text.length);
-        }
-
-        /**
-         * Returns a deserialized id value.
-         * @param {string} id - identifier.
-         */
-        function deserializeId(id) {
-            return id.split(".").map(function(val, i) {
-                return i % 2 === 0 ? parseInt(val) : val;
-            });
         }
 
         /**
