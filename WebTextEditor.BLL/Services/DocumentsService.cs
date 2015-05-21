@@ -71,25 +71,7 @@ namespace WebTextEditor.BLL.Services
                 UserId = userId
             };
 
-            // Should be added default boundaries for CRDT
-            var first = new DocumentContent
-            {
-                DocumentId = document.Id,
-                Id = "0.srv",
-                Value = ""
-            };
-
-            var last = new DocumentContent
-            {
-                DocumentId = document.Id,
-                Id = "32768.srv",
-                Value = ""
-            };
-
-            await Task.WhenAll(
-                _documentsRepository.AddAsync(document),
-                _documentContentService.AddAsync(first),
-                _documentContentService.AddAsync(last));
+            await _documentsRepository.AddAsync(document);
 
             return _mapper.Map<DocumentEntity, Document>(document);
         }

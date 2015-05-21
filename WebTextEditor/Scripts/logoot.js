@@ -1,12 +1,11 @@
 (function(EventEmitter, window) {
 
-    var MAX = 32767;
-    var FIRST = [0, ""];
-    var LAST = [MAX, ""];
+    var MAX = 32768;
+    var FIRST = [0];
+    var LAST = [MAX];
 
     /**
      * @param @optional {Object} atoms
-     * @param @optional {Array} ids
      */
     function Logoot(atoms) {
         EventEmitter.apply(this);
@@ -18,7 +17,13 @@
         // this.ids is an ordered index of atom ids. If has pseudo-atoms FIRST and
         // LAST to denote the begining and ending boundaries of our linear data.
         var ids = getIdentifiers(this.atoms);
-        this.ids = ids.length > 0 ? ids : [FIRST, LAST];
+        ids.unshift(FIRST);
+        ids.push(LAST);
+
+        this.ids = ids;
+
+        // this.clock is a counter incremented on each insert operation
+        this.clock = 0;
     }
 
     Logoot.prototype = Object.create(EventEmitter.prototype);
@@ -34,7 +39,7 @@
      */
     Logoot.prototype.ins = function(id, atom, agent, insertAfter) {
         var ids = this.ids;
-        if (!insertAfter) {
+        if (typeof  insertAfter == "undefined") {
             insertAfter = indexOfGreatestLessThan(ids, id, compare);
         }
         ids.splice(insertAfter + 1, 0, id);
@@ -104,13 +109,18 @@
      * @param {String} agent is the id of the author creating the id
      * @return {Array} id between from and to
      */
-    Logoot.prototype.genId = function(from, to, agent) {
+    Logoot.prototype.genId = function(from, to, agent, depth) {
+        depth = depth || 1;
+
         var min = from[0] || 0;
-        var max = to[0] || MAX;
-        if (min + 1 < MAX) {
-            return [randomIntBtwn(min, max), agent];
+        var max = to[0] || MAX * depth - 1;
+        
+        if (min < MAX * depth - 1) {
+            return [randomIntBtwn(min, max), agent, this.clock++];
         }
-        return [from[0] || 0, from[1] || agent].concat(this.genId(from.slice(2), to.slice(2), agent));
+
+        return [from[0] || 0, from[1] || agent, from[2] || 0]
+            .concat(this.genId(from.slice(3), to.slice(3), agent, depth + 1));
     };
 
     /**
@@ -121,7 +131,7 @@
      * @return {Number} random number
      */
     function randomIntBtwn(x, y) {
-        return x + Math.ceil(Math.random() * (y - x - 1));
+        return x + Math.ceil(Math.random() * (y - x));
     }
 
     /**
@@ -171,21 +181,16 @@
      */
     function compare(a, b) {
         var depth = Math.max(a.length, b.length);
-        var ai, bi, as, bs;
+        var ai, bi;
 
-        for (var i = 0; i < depth; i += 2) {
+        for (var i = 0; i < depth; i ++) {
             ai = a[i];
             bi = b[i];
-            as = a[i + 1];
-            bs = b[i + 1];
 
             if (typeof ai == "undefined") return -1;
             if (typeof bi == "undefined") return 1;
             if (ai < bi) return -1;
             if (ai > bi) return 1;
-
-            if (as < bs) return -1;
-            if (as > bs) return 1;
         }
 
         return 0;
@@ -217,10 +222,11 @@
     * Returns a deserialized id value.
     *
     * @param {String} id - identifier.
+    * @return {Array}
     */
     function deserializeId(id) {
-        return id.split(".").map(function(val, i) {
-            return i % 2 === 0 ? parseInt(val) : val;
+        return id.split(".").map(function (val) {
+            return parseInt(val);
         });
     }
 
