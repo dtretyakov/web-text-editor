@@ -1,8 +1,17 @@
 (function(EventEmitter, window) {
 
-    var MAX = 32768;
+    var MAX = 32;
     var FIRST = [0];
-    var LAST = [MAX];
+    var LAST = [undefined];
+
+    // maximum depth of ids
+    var maxDepth = 1;
+
+    // counter incremented on each insert operation
+    var clock = 0;
+
+    // list of number generators on the specified range
+    var numGenerators = [randomIntBtwn, boundaryHighIntBtwn, boundaryLowerIntBtwn];
 
     /**
      * @param @optional {Object} atoms
@@ -14,16 +23,18 @@
         // maps an atom id to an atom. An atom can be any data type.
         this.atoms = atoms || {};
 
-        // this.ids is an ordered index of atom ids. If has pseudo-atoms FIRST and
-        // LAST to denote the begining and ending boundaries of our linear data.
-        var ids = getIdentifiers(this.atoms);
+        var ids = getIdentifiers(Object.keys(this.atoms));
+
+        // determine maximum id depth
+        maxDepth = getIdentifiersDepth(ids);
+
+        // wrap ids in the tokens
         ids.unshift(FIRST);
         ids.push(LAST);
 
+        // this.ids is an ordered index of atom ids. If has pseudo-atoms FIRST and
+        // LAST to denote the begining and ending boundaries of our linear data.
         this.ids = ids;
-
-        // this.clock is a counter incremented on each insert operation
-        this.clock = 0;
     }
 
     Logoot.prototype = Object.create(EventEmitter.prototype);
@@ -39,7 +50,7 @@
      */
     Logoot.prototype.ins = function(id, atom, agent, insertAfter) {
         var ids = this.ids;
-        if (typeof  insertAfter == "undefined") {
+        if (typeof insertAfter == "undefined") {
             insertAfter = indexOfGreatestLessThan(ids, id, compare);
         }
         ids.splice(insertAfter + 1, 0, id);
@@ -76,7 +87,7 @@
      *
      * @param {Array} op can be either ['ins', id, line, agent] or ['del', id, agent]
      */
-    Logoot.prototype.applyOp = function (op) {
+    Logoot.prototype.applyOp = function(op) {
         var args = op.slice(1);
         if (typeof args[0] == "string") {
             args[0] = deserializeId(args[0]);
@@ -110,13 +121,19 @@
      * @return {Array} id between from and to
      */
     Logoot.prototype.genId = function(from, to, agent, depth) {
+
         depth = depth || 1;
 
+        // base depends on depth of identifiers
+        maxDepth = Math.max(maxDepth, depth);
+        var base = MAX * Math.pow(2, maxDepth);
+
         var min = from[0] || 0;
-        var max = to[0] || MAX * depth - 1;
-        
-        if (min < MAX * depth - 1) {
-            return [randomIntBtwn(min, max), agent, this.clock++];
+        var max = to[0] || base;
+
+        if (min < base - 1) {
+            var id = generateIntBtwn(min, max);
+            return [id, agent, clock++];
         }
 
         return [from[0] || 0, from[1] || agent, from[2] || 0]
@@ -124,14 +141,52 @@
     };
 
     /**
-     * Generates a random integer between x and y, non-inclusive.
+     * Generates a new integer between min and max, non-inclusive.
      *
-     * @param {Number} x
-     * @param {Number} y
+     * @param {Number} min
+     * @param {Number} max
      * @return {Number} random number
      */
-    function randomIntBtwn(x, y) {
-        return x + Math.ceil(Math.random() * (y - x));
+    function generateIntBtwn(min, max) {
+        var generatorId = Math.floor(Math.random() * numGenerators.length);
+        var generator = numGenerators[generatorId];
+
+        return generator(min, max);
+    }
+
+    /**
+     * Generates a random integer between min and max, non-inclusive.
+     *
+     * @param {Number} min
+     * @param {Number} max
+     * @return {Number} random number
+     */
+    function randomIntBtwn(min, max) {
+        return Math.floor(Math.random() * (max - min - 1)) + min + 1;
+    }
+
+    /**
+     * Generates a random integer between min and max, non-inclusive
+     * with a lower boundary constraint.
+     *
+     * @param {Number} min
+     * @param {Number} max
+     * @return {Number} random number
+     */
+    function boundaryLowerIntBtwn(min, max) {
+        return Math.floor(Math.random() * (max - min - 1)) + min + 1;
+    }
+
+    /**
+     * Generates a random integer between min and max, non-inclusive
+     * with a high boundary constraint.
+     *
+     * @param {Number} min
+     * @param {Number} max
+     * @return {Number} random number
+     */
+    function boundaryHighIntBtwn(min, max) {
+        return Math.floor(Math.random() * (max - min - 1)) + min + 1;
     }
 
     /**
@@ -142,9 +197,9 @@
      * @param {Function} compare(a, b) returns -1 if a < b; 1 if a > b; 0 if a == b
      * @return {Number} index of x in xs. -1 if x is not in xs.
      */
-    function indexOf(xs, x, compare) {
+    function indexOf(xs, x, comparer) {
         for (var i = 0, l = xs.length; i < l; i++) {
-            if (compare(xs[i], x) === 0) return i;
+            if (comparer(xs[i], x) === 0) return i;
         }
         return -1;
     }
@@ -159,10 +214,10 @@
      * @param {Function} compare(a, b) returns -1 if a < b; 1 if a > b; 0 if a == b
      * @return {Number}
      */
-    function indexOfGreatestLessThan(xs, x, compare) {
+    function indexOfGreatestLessThan(xs, x, comparer) {
         var comp, i, l;
         for (i = 0, l = xs.length; i < l; i++) {
-            comp = compare(xs[i], x);
+            comp = comparer(xs[i], x);
             if (comp !== -1) {
                 return i - 1;
             }
@@ -212,8 +267,8 @@
      * @param {Object} atoms
      * @return {Array}
      */
-    function getIdentifiers(atoms) {
-        return Object.keys(atoms).map(function(key) {
+    function getIdentifiers(keys) {
+        return keys.map(function(key) {
             return deserializeId(key);
         }).sort(compare);
     }
@@ -225,9 +280,21 @@
     * @return {Array}
     */
     function deserializeId(id) {
-        return id.split(".").map(function (val) {
+        return id.split(".").map(function(val) {
             return parseInt(val);
         });
+    }
+
+    /**
+    * Returns maximum depth of identfiers.
+    *
+    * @param {String} id - identifier.
+    * @return {Array}
+    */
+    function getIdentifiersDepth(ids) {
+        return ids.reduce(function(max, id) {
+            return Math.max(max, id.length / 3);
+        }, 1);
     }
 
     /**
