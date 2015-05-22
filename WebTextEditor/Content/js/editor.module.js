@@ -10,6 +10,7 @@
             "services.auth",
             "services.data",
             "services.hubs",
+            "services.input",
             "services.exceptions",
             "services.generators",
             "services.interceptors"

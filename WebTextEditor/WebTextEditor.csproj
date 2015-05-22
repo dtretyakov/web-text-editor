@@ -283,6 +283,7 @@
     <Content Include="Content\js\editor.module.js" />
     <Content Include="Content\js\factories\httpInterceptor.factory.js" />
     <Content Include="Content\js\factories\exceptionHandler.factory.js" />
+    <Content Include="Content\js\services\caretposition.service.js" />
     <Content Include="Content\js\services\auth.service.js" />
     <Content Include="Content\js\services\documents.service.js" />
     <Content Include="Content\css\toastr.css" />

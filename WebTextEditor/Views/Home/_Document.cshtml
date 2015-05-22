@@ -11,7 +11,7 @@
                 <textarea id="editor" rows="10"
                           class="form-control input-lg"
                           e-caret="vm.caret"
-                          ng-cut="vm.cut()"
+                          ng-cut="vm.cut($event)"
                           ng-paste="vm.paste($event)"
                           ng-keypress="vm.keypress($event)"
                           ng-keydown="vm.keydown($event)"

@@ -12,12 +12,13 @@
         "documentsHubService",
         "$routeParams",
         "Logoot",
-        "LogootText"
+        "LogootText",
+        "caretPositionService"
     ];
 
     function DocumentController(
         $scope, generator, documentsService, documentsHubService,
-        $routeParams, Logoot, LogootText) {
+        $routeParams, Logoot, LogootText, caretService) {
 
         var vm = this;
 
@@ -136,11 +137,9 @@
          * Handles cut event.
          * @param {object} event - cut event.
          */
-        function cut() {
-            var start = vm.caret.start;
-            var end = vm.caret.end;
-
-            deleteText(start, end);
+        function cut(event) {
+            var selection = caretService.getSelection(event.target);
+            deleteText(selection.start, selection.end);
         }
 
         /**
@@ -148,14 +147,13 @@
          * @param {object} event - paste event.
          */
         function paste(event) {
-            var start = vm.caret.start;
-            var end = vm.caret.end;
+            var selection = caretService.getSelection(event.target);
             var clipboardData = event.originalEvent.clipboardData;
 
-            deleteText(start, end);
+            deleteText(selection.start, selection.end);
 
             var value = clipboardData.getData("Text");
-            text.ins(start, value);
+            text.ins(selection.start, value);
         }
 
         /**
@@ -164,12 +162,13 @@
          */
         function keypress(event) {
             var character = getChar(event);
-            var start = vm.caret.start;
-            var end = vm.caret.end;
+            if (!character || event.ctrlKey) return;
 
-            deleteText(start, end);
+            var selection = caretService.getSelection(event.target);
 
-            text.ins(start, character);
+            deleteText(selection.start, selection.end);
+
+            text.ins(selection.start, character);
         }
 
         /**
@@ -177,29 +176,27 @@
          * @param {object} event - keyboard event.
          */
         function keydown(event) {
+            var selection = caretService.getSelection(event.target);
             var keyCode = event.keyCode;
-            var start = vm.caret.start;
-            var end = vm.caret.end;
 
             // Backspace key press
             if (keyCode === 8) {
 
-                deleteText(start, end);
+                deleteText(selection.start, selection.end);
 
-                if (start === end && start > 0) {
-                    text.del(start - 1);
+                if (selection.start === selection.end && selection.start > 0) {
+                    text.del(selection.start - 1);
                 }
             }
 
             // Delete key press
             if (keyCode === 46) {
-
                 var length = text.str.length;
 
-                deleteText(start, end);
+                deleteText(selection.start, selection.end);
 
-                if (start === end && end < length) {
-                    text.del(start);
+                if (selection.start === selection.end && selection.end < length) {
+                    text.del(selection.start);
                 }
             }
         }
@@ -223,7 +220,7 @@
             if (event.which == null) {
                 // IE
                 return String.fromCharCode(event.keyCode);
-            } else if (event.which !== 0 && event.charCode !== 0) {
+            } else if (event.which !== 0) {
                 // the rest
                 return String.fromCharCode(event.which);
             } else {
