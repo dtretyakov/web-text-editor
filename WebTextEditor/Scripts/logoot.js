@@ -1,17 +1,23 @@
 (function(EventEmitter, window) {
 
-    var MAX = 32;
-    var FIRST = [0];
-    var LAST = [undefined];
+    // exponent value for base computation
+    var POWER = 6;
 
-    // maximum depth of ids
-    var maxDepth = 1;
+    // first and last sequence element
+    var FIRST = [0];
+    var LAST = [Math.pow(2, POWER)];
+
+    // same seed value should be used between replicas
+    var SEED = 42;
+
+    // boundary value used as constraint while id generation
+    var BOUNDARY = 10;
 
     // counter incremented on each insert operation
     var clock = 0;
 
     // list of number generators on the specified range
-    var numGenerators = [randomIntBtwn, boundaryHighIntBtwn, boundaryLowerIntBtwn];
+    var numGenerators = [boundaryMinusStrategy, boundaryPlusStrategy];
 
     /**
      * @param @optional {Object} atoms
@@ -23,18 +29,10 @@
         // maps an atom id to an atom. An atom can be any data type.
         this.atoms = atoms || {};
 
-        var ids = getIdentifiers(Object.keys(this.atoms));
-
-        // determine maximum id depth
-        maxDepth = getIdentifiersDepth(ids);
-
-        // wrap ids in the tokens
-        ids.unshift(FIRST);
-        ids.push(LAST);
-
         // this.ids is an ordered index of atom ids. If has pseudo-atoms FIRST and
         // LAST to denote the begining and ending boundaries of our linear data.
-        this.ids = ids;
+        var ids = getIdentifiers(Object.keys(this.atoms));
+        this.ids = [FIRST].concat(ids, [LAST]);
     }
 
     Logoot.prototype = Object.create(EventEmitter.prototype);
@@ -54,7 +52,7 @@
             insertAfter = indexOfGreatestLessThan(ids, id, compare);
         }
         ids.splice(insertAfter + 1, 0, id);
-        this.atoms[hashId(id)] = atom;
+        this.atoms[serializeId(id)] = atom;
         if (arguments.length < 4) {
             this.emit("ins", insertAfter, atom);
         }
@@ -75,7 +73,7 @@
         var ids = this.ids;
         indexOfId || (indexOfId = indexOf(ids, id, compare));
         ids.splice(indexOfId, 1);
-        delete this.atoms[hashId(id)];
+        delete this.atoms[serializeId(id)];
         if (arguments.length < 3) {
             this.emit("del", indexOfId - 1);
         }
@@ -108,7 +106,7 @@
         var atoms = this.atoms;
         return this.ids.reduce(function(val, id) {
             if (id === FIRST || id === LAST) return val;
-            return fn(val, atoms[hashId(id)]);
+            return fn(val, atoms[serializeId(id)]);
         }, init);
     };
 
@@ -122,17 +120,14 @@
      */
     Logoot.prototype.genId = function(from, to, agent, depth) {
 
-        depth = depth || 1;
-
         // base depends on depth of identifiers
-        maxDepth = Math.max(maxDepth, depth);
-        var base = MAX * Math.pow(2, maxDepth);
+        depth = depth || 0;
+        var base = Math.pow(2, POWER + depth);
 
         var min = from[0] || 0;
         var max = to[0] || base;
-
-        if (min < base - 1) {
-            var id = generateIntBtwn(min, max);
+        if (min < max - 1) {
+            var id = generateIntBtwn(min, max, depth);
             return [id, agent, clock++];
         }
 
@@ -145,10 +140,11 @@
      *
      * @param {Number} min
      * @param {Number} max
+     * @param {Number} depth
      * @return {Number} random number
      */
-    function generateIntBtwn(min, max) {
-        var generatorId = Math.floor(Math.random() * numGenerators.length);
+    function generateIntBtwn(min, max, depth) {
+        var generatorId = Math.round(random(SEED + depth));
         var generator = numGenerators[generatorId];
 
         return generator(min, max);
@@ -173,8 +169,9 @@
      * @param {Number} max
      * @return {Number} random number
      */
-    function boundaryLowerIntBtwn(min, max) {
-        return Math.floor(Math.random() * (max - min - 1)) + min + 1;
+    function boundaryPlusStrategy(min, max) {
+        var interval = Math.min(max - min, BOUNDARY);
+        return randomIntBtwn(min, min + interval);
     }
 
     /**
@@ -185,8 +182,9 @@
      * @param {Number} max
      * @return {Number} random number
      */
-    function boundaryHighIntBtwn(min, max) {
-        return Math.floor(Math.random() * (max - min - 1)) + min + 1;
+    function boundaryMinusStrategy(min, max) {
+        var interval = Math.min(max - min, BOUNDARY);
+        return randomIntBtwn(max - interval, max);
     }
 
     /**
@@ -257,20 +255,8 @@
      * @param {Array} id
      * @return {String}
      */
-    function hashId(id) {
+    function serializeId(id) {
         return id.join(".");
-    }
-
-    /**
-     * Returns a list of composite identifiers from atoms.
-     *
-     * @param {Object} atoms
-     * @return {Array}
-     */
-    function getIdentifiers(keys) {
-        return keys.map(function(key) {
-            return deserializeId(key);
-        }).sort(compare);
     }
 
     /**
@@ -286,15 +272,26 @@
     }
 
     /**
-    * Returns maximum depth of identfiers.
+     * Returns a list of composite identifiers from atoms.
+     *
+     * @param {Object} atoms
+     * @return {Array}
+     */
+    function getIdentifiers(keys) {
+        return keys.map(function(key) {
+            return deserializeId(key);
+        }).sort(compare);
+    }
+
+    /**
+    * Returns a pseudo random seeded value on range [0..1].
     *
-    * @param {String} id - identifier.
-    * @return {Array}
+    * @param {Number} seed - seed value.
+    * @return {Number}
     */
-    function getIdentifiersDepth(ids) {
-        return ids.reduce(function(max, id) {
-            return Math.max(max, id.length / 3);
-        }, 1);
+    function random(seed) {
+        var x = Math.sin(seed) * 10000;
+        return x - Math.floor(x);
     }
 
     /**
