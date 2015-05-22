@@ -7,6 +7,7 @@ namespace WebTextEditor.DAL
     /// <summary>
     ///     Database context.
     /// </summary>
+    [DbConfigurationType(typeof (DatabaseConfiguration))]
     public class DataContext : DbContext
     {
         public DataContext()

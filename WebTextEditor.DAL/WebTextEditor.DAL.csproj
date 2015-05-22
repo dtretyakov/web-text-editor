@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\DatabaseConfiguration.cs" />
     <Compile Include="Configurations\DocumentCollaboratorEntityConfiguration.cs" />
     <Compile Include="Configurations\DocumentContentEntityConfiguration.cs" />
     <Compile Include="Configurations\DocumentEntityConfiguration.cs" />
