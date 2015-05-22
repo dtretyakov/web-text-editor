@@ -13,7 +13,8 @@
             "services.input",
             "services.exceptions",
             "services.generators",
-            "services.interceptors"
+            "services.interceptors",
+            "monospaced.elastic"
         ])
         .constant("$", window.$)
         .constant("toastr", window.toastr)

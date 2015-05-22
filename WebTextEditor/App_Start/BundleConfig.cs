@@ -22,6 +22,7 @@ namespace WebTextEditor
                 "~/scripts/angular-route.js",
                 "~/scripts/angular-resource.js",
                 "~/scripts/angular-animate.js",
+                "~/scripts/angular-elastic.js",
                 "~/scripts/toastr.js",
                 "~/scripts/jquery.signalR-{version}.js",
                 "~/scripts/EventEmitter.js",
