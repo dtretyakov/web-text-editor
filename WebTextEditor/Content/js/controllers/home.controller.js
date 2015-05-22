@@ -11,15 +11,12 @@
         var vm = this;
 
         vm.addDocument = addDocument;
-        vm.isBusy = false;
+
+        // implementation
 
         function addDocument() {
-            vm.isBusy = true;
-
             documentsService.add().then(function(document) {
                 $location.path("/documents/" + document.id);
-            }).finally(function() {
-                vm.isBusy = false;
             });
         }
     }

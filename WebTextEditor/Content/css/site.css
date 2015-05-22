@@ -89,3 +89,9 @@
 .carets .cursor.hover .name {
     display: block;
 }
+
+.new-document {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+}

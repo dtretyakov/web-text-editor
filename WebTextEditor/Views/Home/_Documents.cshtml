@@ -1,14 +1,21 @@
 ﻿<script type="text/ng-template" id="editor.documents.html">
-    
+
     <div class="row">
         <div ng-repeat="document in vm.documents" class="col-md-4">
-            <h2>{{document.name}}</h2>
+            <h3>{{document.name}}</h3>
             <p>Authored: {{document.userId}}</p>
             <p>Created: {{document.created}}</p>
             <p>
                 <a class="btn btn-warning" href="/documents/{{document.id}}">Edit document &raquo;</a>
             </p>
         </div>
+        <div class="col-md-12">
+            <h3 class="ng-hide" ng-show="vm.documents.length === 0">No documents, please create a new one.</h3>
+        </div>
+    </div>
+    
+    <div class="new-document">
+        <a href="" ng-click="vm.addDocument()" class="btn btn-primary btn-lg" title="Create a new document">New Document</a>
     </div>
 
 </script>
