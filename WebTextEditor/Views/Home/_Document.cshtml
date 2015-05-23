@@ -1,6 +1,6 @@
 ﻿<script type="text/ng-template" id="editor.document.html">
 
-    <div class="row">
+    <div class="row ng-hide animate-show" ng-show="!vm.isLoading">
         <div class="col-md-12">
             <a href="#" class="document-name" title="Rename document" ng-click="vm.showRenameDialog()">
                 <h2>{{vm.document.name}}</h2>
@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row animate-show" ng-show="!vm.isLoading">
         <div class="col-md-8">
             <form class="editor">
                 <textarea id="editor" rows="10"
@@ -37,6 +37,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="row" ng-show="vm.isLoading">
+        <div class="loader center-block">Loading...</div>
     </div>
 
 </script>

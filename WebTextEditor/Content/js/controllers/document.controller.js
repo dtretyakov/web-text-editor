@@ -29,6 +29,7 @@
         vm.connectionId = undefined;
         vm.text = "";
         vm.caret = {};
+        vm.isLoading = true;
 
         vm.cut = cut;
         vm.paste = paste;
@@ -99,6 +100,8 @@
             document.collaborators.forEach(function(collaborator) {
                 addOrUpdateCollaborator(collaborator);
             });
+
+            vm.isLoading = false;
         }
 
         /**
