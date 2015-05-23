@@ -2,20 +2,29 @@
 
     <div class="row">
         <div ng-repeat="document in vm.documents" class="col-md-4">
-            <h3>{{document.name}}</h3>
+            <h3><a href="/documents/{{document.id}}">{{document.name}}</a></h3>
             <p>Authored: {{document.userId}}</p>
-            <p>Created: {{document.created}}</p>
+            <p>Created: {{document.created | date: "medium"}}</p>
             <p>
-                <a class="btn btn-warning" href="/documents/{{document.id}}">Edit document &raquo;</a>
+                <a class="btn btn-danger" href=""
+                   e-confirm-click="vm.deleteDocument(document)"
+                   e-confirmation="Are you sure want to delete '{{document.name}}'?">
+                    Delete document
+                </a>
             </p>
         </div>
         <div class="col-md-12">
-            <h3 class="ng-hide" ng-show="vm.documents.length === 0">No documents, please create a new one.</h3>
+            <h3 class="ng-hide" ng-show="vm.documents.length === 0 && !vm.isLoading">
+                No documents, please create a new one.
+            </h3>
+            <h3 ng-show="vm.isLoading">Loading documents...</h3>
         </div>
     </div>
     
     <div class="new-document">
-        <a href="" ng-click="vm.addDocument()" class="btn btn-primary btn-lg" title="Create a new document">New Document</a>
+        <a class="btn btn-primary btn-lg" href="" ng-click="vm.addDocument()" title="Create a new document">
+            New Document
+        </a>
     </div>
 
 </script>

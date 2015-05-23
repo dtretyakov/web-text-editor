@@ -578,7 +578,7 @@
                 Provides a document management facilities.
             </summary>
         </member>
-        <member name="M:WebTextEditor.Controllers.DocumentsController.#ctor(WebTextEditor.BLL.Services.IDocumentsService)">
+        <member name="M:WebTextEditor.Controllers.DocumentsController.#ctor(WebTextEditor.BLL.Services.IDocumentsService,Microsoft.AspNet.SignalR.Infrastructure.IConnectionManager)">
             <summary>
                 Constructor.
             </summary>

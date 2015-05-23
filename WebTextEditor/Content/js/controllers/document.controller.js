@@ -14,12 +14,13 @@
         "Logoot",
         "LogootText",
         "caretPositionService",
-        "ModalService"
+        "ModalService",
+        "$location"
     ];
 
     function DocumentController(
-        $scope, generator, documentsService, documentsHubService,
-        $routeParams, Logoot, LogootText, caretService, modalService) {
+        $scope, generator, documentsService, documentsHubService, $routeParams,
+        Logoot, LogootText, caretService, modalService, $location) {
 
         var vm = this;
 
@@ -51,6 +52,7 @@
             documentsHubService.client.caretPosition = addOrUpdateCollaborator;
             documentsHubService.client.addChar = addChar;
             documentsHubService.client.removeChar = removeChar;
+            documentsHubService.client.leaveDocument = leaveDocument;
             documentsHubService.connect().then(configureHubConnection);
         }
 
@@ -64,7 +66,9 @@
             vm.connectionId = connection.connectionId;
 
             connection.joinDocument(documentId).then(function() {
-                documentsService.get(documentId).then(processDocument);
+                documentsService.get(documentId)
+                    .then(processDocument)
+                    .catch(leaveDocument);
             });
 
             $scope.$on("$destroy", function() {
@@ -278,7 +282,7 @@
                 inputs: {
                     name: vm.document.name
                 }
-            }).then(function (modal) {
+            }).then(function(modal) {
                 modal.element.modal();
                 modal.close.then(renameDocument);
             });
@@ -291,6 +295,13 @@
         function renameDocument(name) {
             vm.document.name = name;
             documentsService.update(vm.document);
+        }
+
+        /**
+         * Changes location to the documents page.
+         */
+        function leaveDocument() {
+            $location.path("/documents");
         }
     }
 })();

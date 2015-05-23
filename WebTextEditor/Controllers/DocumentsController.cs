@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Microsoft.AspNet.SignalR.Infrastructure;
 using WebTextEditor.BLL.Services;
 using WebTextEditor.Domain.DTO;
+using WebTextEditor.Hubs;
 
 namespace WebTextEditor.Controllers
 {
@@ -14,13 +16,15 @@ namespace WebTextEditor.Controllers
     public sealed class DocumentsController : ApiController
     {
         private readonly IDocumentsService _documentsService;
+        private readonly IConnectionManager _connectionManager;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public DocumentsController(IDocumentsService documentsService)
+        public DocumentsController(IDocumentsService documentsService, IConnectionManager connectionManager)
         {
             _documentsService = documentsService;
+            _connectionManager = connectionManager;
         }
 
         /// <summary>
@@ -68,9 +72,13 @@ namespace WebTextEditor.Controllers
         /// </summary>
         /// <returns>Document.</returns>
         [Route("{documentId}")]
-        public Task Delete(string documentId)
+        public async Task Delete(string documentId)
         {
-            return _documentsService.DeleteAsync(User.Identity.Name, documentId);
+            await _documentsService.DeleteAsync(User.Identity.Name, documentId);
+
+            // Notify cliens to leave removed document
+            var documentsHub = _connectionManager.GetHubContext<DocumentsHub>();
+            await documentsHub.Clients.Group(documentId).leaveDocument();
         }
     }
 }

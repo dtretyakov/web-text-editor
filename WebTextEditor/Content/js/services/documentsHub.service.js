@@ -36,6 +36,9 @@
             documentsHub.client.removeChar = function () {
                 executeFunction(clientFunctions.removeChar, arguments);
             };
+            documentsHub.client.leaveDocument = function () {
+                executeFunction(clientFunctions.leaveDocument, arguments);
+            };
 
             $.connection.hub.start().done(function (connection) {
 

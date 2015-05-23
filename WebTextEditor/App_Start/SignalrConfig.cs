@@ -30,6 +30,8 @@ namespace WebTextEditor
             };
 
             app.MapSignalR(hubConfiguration);
+
+            GlobalHost.DependencyResolver = dependencyResolver;
         }
     }
 }

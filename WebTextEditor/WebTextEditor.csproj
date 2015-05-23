@@ -331,6 +331,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\js\services\documentsHub.service.js" />
+    <Content Include="Content\js\directives\confirmclick.directive.js" />
     <None Include="Properties\PublishProfiles\dtretyakov.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />

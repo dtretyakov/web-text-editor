@@ -81,6 +81,7 @@ namespace WebTextEditor
             container.Register<IHubActivator, DefaultHubActivator>();
             container.Register<IParameterResolver, DefaultParameterResolver>();
             container.Register<IProtectedData, DefaultProtectedData>();
+            container.Register(() => GlobalHost.ConnectionManager);
         }
     }
 }

@@ -12,6 +12,8 @@
 
         vm.documents = [];
         vm.addDocument = addDocument;
+        vm.deleteDocument = deleteDocument;
+        vm.isLoading = true;
 
         activate();
 
@@ -20,12 +22,23 @@
         function activate() {
             documentsService.getAll().then(function(data) {
                 vm.documents = data;
+            }).finally(function() {
+                vm.isLoading = false;
             });
         }
 
         function addDocument() {
-            documentsService.add().then(function (document) {
+            documentsService.add().then(function(document) {
                 $location.path("/documents/" + document.id);
+            });
+        }
+
+        function deleteDocument(document) {
+            documentsService.remove(document.id).then(function() {
+                var index = vm.documents.indexOf(document);
+                if (index > -1) {
+                    vm.documents.splice(index, 1);
+                }
             });
         }
     }

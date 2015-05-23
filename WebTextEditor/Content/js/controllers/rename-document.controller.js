@@ -5,7 +5,7 @@
         .module("editor")
         .controller("RenameDocumentController", RenameDocumentController);
 
-    RenameDocumentController.inject = ["$scope", "name", "close"];
+    RenameDocumentController.$inject = ["$scope", "name", "close"];
 
     function RenameDocumentController($scope, name, close) {
 

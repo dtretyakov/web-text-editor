@@ -7,6 +7,7 @@
             "ngRoute",
             "directives.caretposition",
             "directives.inputcaret",
+            "directives.confirm-click",
             "services.auth",
             "services.data",
             "services.hubs",
