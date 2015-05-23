@@ -284,7 +284,7 @@
     <Content Include="Content\js\editor.module.js" />
     <Content Include="Content\js\factories\httpInterceptor.factory.js" />
     <Content Include="Content\js\factories\exceptionHandler.factory.js" />
-    <Content Include="Content\js\services\caretposition.service.js" />
+    <Content Include="Content\js\services\inputelement.service.js" />
     <Content Include="Content\js\services\auth.service.js" />
     <Content Include="Content\js\services\documents.service.js" />
     <Content Include="Content\css\toastr.css" />
@@ -310,7 +310,7 @@
     <Content Include="Content\css\toastr.less" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Content\js\factories\generator.factory.js" />
-    <Content Include="Content\js\directives\caretposition.directive.js" />
+    <Content Include="Content\js\directives\inputelement.directive.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
@@ -330,7 +330,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Content\js\services\documentsHub.service.js" />
+    <Content Include="Content\js\services\documentshub.service.js" />
     <Content Include="Content\js\directives\confirmclick.directive.js" />
     <None Include="Properties\PublishProfiles\dtretyakov.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />

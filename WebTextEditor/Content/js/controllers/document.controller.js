@@ -13,14 +13,14 @@
         "$routeParams",
         "Logoot",
         "LogootText",
-        "caretPositionService",
+        "inputElementService",
         "ModalService",
         "$location"
     ];
 
     function DocumentController(
         $scope, generator, documentsService, documentsHubService, $routeParams,
-        Logoot, LogootText, caretService, modalService, $location) {
+        Logoot, LogootText, inputService, modalService, $location) {
 
         var vm = this;
 
@@ -28,7 +28,7 @@
         vm.collaborators = {};
         vm.connectionId = undefined;
         vm.text = "";
-        vm.caret = {};
+        vm.input = vm.input || {};
         vm.isLoading = true;
 
         vm.cut = cut;
@@ -51,8 +51,8 @@
             documentsHubService.client.addCollaborator = addOrUpdateCollaborator;
             documentsHubService.client.removeCollaborator = removeCollaborator;
             documentsHubService.client.caretPosition = addOrUpdateCollaborator;
-            documentsHubService.client.addChar = addChar;
-            documentsHubService.client.removeChar = removeChar;
+            documentsHubService.client.addChar = addCharacterOperation;
+            documentsHubService.client.removeChar = removeCharacterOperation;
             documentsHubService.client.leaveDocument = leaveDocument;
             documentsHubService.connect().then(configureHubConnection);
         }
@@ -76,7 +76,7 @@
                 connection.leaveDocument(documentId);
             });
 
-            $scope.$watch("vm.caret.start", function(value) {
+            $scope.$watch("vm.input.start", function(value) {
                 connection.setCaret(documentId, value);
             });
         }
@@ -92,6 +92,9 @@
 
             // Construct CRDT
             var logoot = new Logoot(document.content);
+            logoot.on("ins", insertDocumentCharacter);
+            logoot.on("del", removeDocumentCharacter);
+
             text = new LogootText(agentId, logoot);
             text.on("logoot.op", sendOperation);
 
@@ -148,7 +151,7 @@
          * @param {object} event - cut event.
          */
         function cut(event) {
-            var selection = caretService.getSelection(event.target);
+            var selection = inputService.getSelection(event.target);
             deleteText(selection.start, selection.end);
         }
 
@@ -157,7 +160,7 @@
          * @param {object} event - paste event.
          */
         function paste(event) {
-            var selection = caretService.getSelection(event.target);
+            var selection = inputService.getSelection(event.target);
             var clipboardData = event.originalEvent.clipboardData;
 
             deleteText(selection.start, selection.end);
@@ -171,10 +174,10 @@
          * @param {object} event - keyboard event.
          */
         function keypress(event) {
-            var character = getChar(event);
-            if (!character || event.ctrlKey) return;
+            var character = inputService.getChar(event);
+            if (!character) return;
 
-            var selection = caretService.getSelection(event.target);
+            var selection = inputService.getSelection(event.target);
 
             deleteText(selection.start, selection.end);
 
@@ -186,7 +189,7 @@
          * @param {object} event - keyboard event.
          */
         function keydown(event) {
-            var selection = caretService.getSelection(event.target);
+            var selection = inputService.getSelection(event.target);
             var keyCode = event.keyCode;
 
             // Backspace key press
@@ -223,42 +226,20 @@
         }
 
         /**
-         * Returns a character value from keyboard event.
-         * @param {object} event - keyboard event.
-         */
-        function getChar(event) {
-            if (event.which == null) {
-                // IE
-                return String.fromCharCode(event.keyCode);
-            } else if (event.which !== 0) {
-                // the rest
-                return String.fromCharCode(event.which);
-            } else {
-                // special key
-                return null;
-            }
-        }
-
-        /**
-         * Adds a character into the document.
+         * Adds a character into the text structure.
          * @param {string} id - identifier.
          * @param {string} value - character.
          */
-        function addChar(id, value) {
+        function addCharacterOperation(id, value) {
             text.applyOp(["ins", id, value]);
-
-            vm.text = text.str;
         }
 
         /**
-         * Removes a character from the document.
+         * Removes a character from the text structure.
          * @param {string} id - identifier.
          */
-        function removeChar(id) {
+        function removeCharacterOperation(id) {
             text.applyOp(["del", id]);
-
-            vm.text = text.str;
-            vm.caret.start = Math.min(vm.caret.start, vm.text.length);
         }
 
         /**
@@ -272,6 +253,8 @@
                     return collaborators[i].id;
                 }
             }
+
+            return Math.round(Math.random() * 1000);
         }
 
         /**
@@ -305,6 +288,23 @@
          */
         function leaveDocument() {
             $location.path("/documents");
+        }
+
+        /**
+         * Inserts a new text fragment into the document.
+         * @param {number} index - position.
+         * @param {string} text - text.
+         */
+        function insertDocumentCharacter(index, text) {
+            inputService.replaceText(vm.input.element, index, index, text);
+        }
+
+        /**
+         * Removes document text fragment.
+         * @param {number} index - position.
+         */
+        function removeDocumentCharacter(index) {
+            inputService.replaceText(vm.input.element, index, index + 1, "");
         }
     }
 })();

@@ -166,3 +166,5 @@ a.document-name:hover h2 {
         transform: rotate(360deg);
     }
 }
+
+.margin-bottom { margin-bottom: 20px; }

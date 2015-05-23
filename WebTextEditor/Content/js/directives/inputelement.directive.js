@@ -2,22 +2,25 @@
     "use strict";
 
     angular
-        .module("directives.caretposition", ["services.input"])
-        .directive("eCaret", caretPosition);
+        .module("directives.inputelement", ["services.input"])
+        .directive("eInput", inputElement);
 
-    caretPosition.$inject = ["caretPositionService"];
+    inputElement.$inject = ["inputElementService"];
 
-    function caretPosition(caretPositionService) {
+    function inputElement(inputService) {
         return {
             restrict: "A",
             scope: {
-                eCaret: "="
+                eInput: "="
             },
             link: link
         };
 
         function link(scope, element) {
-            if (!scope.eCaret) scope.eCaret = {};
+            if (!scope.eInput) scope.eInput = {};
+
+            var input = element[0];
+            scope.eInput.element = input;
 
             element.on("keydown keyup mousedown mouseup", updatePosition);
 
@@ -31,9 +34,9 @@
 
             function updatePosition() {
                 scope.$apply(function() {
-                    var selection = caretPositionService.getSelection(element[0]);
-                    scope.eCaret.start = selection.start;
-                    scope.eCaret.end = selection.end;
+                    var selection = inputService.getSelection(input);
+                    scope.eInput.start = selection.start;
+                    scope.eInput.end = selection.end;
                 });
             }
         }

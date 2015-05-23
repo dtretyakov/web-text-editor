@@ -9,11 +9,11 @@
     </div>
 
     <div class="row animate-show" ng-show="!vm.isLoading">
-        <div class="col-md-8">
+        <div class="col-md-8 margin-bottom">
             <form class="editor">
                 <textarea id="editor" rows="10"
                           class="form-control input-lg msd-elastic"
-                          e-caret="vm.caret"
+                          e-input="vm.input"
                           ng-cut="vm.cut($event)"
                           ng-paste="vm.paste($event)"
                           ng-keypress="vm.keypress($event)"

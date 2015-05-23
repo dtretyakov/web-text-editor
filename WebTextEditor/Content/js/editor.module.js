@@ -5,8 +5,8 @@
         .module("editor", [
             "ngAnimate",
             "ngRoute",
-            "directives.caretposition",
             "directives.inputcaret",
+            "directives.inputelement",
             "directives.confirm-click",
             "services.auth",
             "services.data",
