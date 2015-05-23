@@ -1,4 +1,4 @@
-# Collaborative real-time editor
+# Real-time collaborative  editor
 
 [![Build](https://ci.appveyor.com/api/projects/status/5gde9vm8u9t2lnu5?svg=true)](https://ci.appveyor.com/project/dtretyakov/web-text-editor/)
 
