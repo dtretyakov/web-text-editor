@@ -2,9 +2,12 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h2>{{vm.document.name}}</h2>
+            <a href="#" class="document-name" title="Rename document" ng-click="vm.showRenameDialog()">
+                <h2>{{vm.document.name}}</h2>
+            </a>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-8">
             <form class="editor">

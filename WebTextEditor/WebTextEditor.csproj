@@ -273,6 +273,7 @@
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\site.css" />
+    <Content Include="Content\js\controllers\rename-document.controller.js" />
     <Content Include="Content\js\controllers\documents.controller.js" />
     <Content Include="Content\js\controllers\document.controller.js" />
     <Content Include="Content\js\controllers\home.controller.js" />
@@ -294,6 +295,7 @@
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-modal-service.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />
     <Content Include="Scripts\angular-route.js" />
@@ -391,6 +393,7 @@
     <Content Include="Views\Home\_Documents.cshtml" />
     <Content Include="Views\Home\_Document.cshtml" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Views\Home\_RenameDocument.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

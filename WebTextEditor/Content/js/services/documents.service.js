@@ -8,7 +8,7 @@
     documentsService.$inject = ["$resource", "$q"];
 
     function documentsService($resource, $q) {
-        var document = $resource("/api/documents/:id", { id: "@id" }, {
+        var documentsResource = $resource("/api/documents/:id", { id: "@id" }, {
             post: { method: "POST" },
             update: { method: "PUT" }
         });
@@ -24,7 +24,7 @@
         function add() {
             var deferred = $q.defer();
 
-            document.post({}, function(data) {
+            documentsResource.post({}, function(data) {
                 deferred.resolve(data);
             }, function(error) {
                 deferred.reject(error.message);
@@ -36,7 +36,7 @@
         function get(documentId) {
             var deferred = $q.defer();
 
-            document.get({ id: documentId }, function(data) {
+            documentsResource.get({ id: documentId }, function(data) {
                 deferred.resolve(data);
             }, function(error) {
                 deferred.reject(error.message);
@@ -48,7 +48,7 @@
         function getAll() {
             var deferred = $q.defer();
 
-            document.query(function(data) {
+            documentsResource.query(function(data) {
                 deferred.resolve(data);
             }, function(error) {
                 deferred.reject(error.message);
@@ -60,7 +60,7 @@
         function update(document) {
             var deferred = $q.defer();
 
-            document.update({ id: document.id }, document, function(data) {
+            documentsResource.update(document, function(data) {
                 deferred.resolve(data);
             }, function(error) {
                 deferred.reject(error.message);
@@ -72,7 +72,7 @@
         function remove(documentId) {
             var deferred = $q.defer();
 
-            document.update({ id: documentId }, function(data) {
+            documentsResource.remove({ id: documentId }, function(data) {
                 deferred.resolve(data);
             }, function(error) {
                 deferred.reject(error.message);

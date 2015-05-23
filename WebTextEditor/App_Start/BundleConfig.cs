@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace WebTextEditor
 {
@@ -23,6 +22,7 @@ namespace WebTextEditor
                 "~/scripts/angular-resource.js",
                 "~/scripts/angular-animate.js",
                 "~/scripts/angular-elastic.js",
+                "~/scripts/angular-modal-service.js",
                 "~/scripts/toastr.js",
                 "~/scripts/jquery.signalR-{version}.js",
                 "~/scripts/EventEmitter.js",

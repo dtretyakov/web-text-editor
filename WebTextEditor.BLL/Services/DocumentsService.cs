@@ -92,11 +92,17 @@ namespace WebTextEditor.BLL.Services
             await _documentsRepository.RemoveAsync(document);
         }
 
-        public Task UpdateAsync(Document document)
+        public async Task UpdateAsync(Document document)
         {
-            var entity = _mapper.Map<Document, DocumentEntity>(document);
+            var entity = await _documentsRepository.GetAsync(document.Id);
+            if (entity == null)
+            {
+                throw new NotFoundException(string.Format("Document {0} was not found.", document.Id));
+            }
 
-            return _documentsRepository.UpdateAsync(entity);
+            entity.Name = document.Name;
+
+            await _documentsRepository.UpdateAsync(entity);
         }
     }
 }

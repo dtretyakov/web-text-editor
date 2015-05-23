@@ -14,7 +14,8 @@
             "services.exceptions",
             "services.generators",
             "services.interceptors",
-            "monospaced.elastic"
+            "monospaced.elastic",
+            "angularModalService"
         ])
         .constant("$", window.$)
         .constant("toastr", window.toastr)

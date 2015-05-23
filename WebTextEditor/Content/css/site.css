@@ -95,3 +95,17 @@
     bottom: 24px;
     right: 24px;
 }
+
+.modal-dialog {
+  padding-top: 10%;
+}
+
+a.document-name h2 {
+    color: #333;
+    display: inline-block;
+}
+
+a.document-name:hover h2 {
+    text-decoration: none;
+    background: #dadada;
+}

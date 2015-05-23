@@ -13,12 +13,13 @@
         "$routeParams",
         "Logoot",
         "LogootText",
-        "caretPositionService"
+        "caretPositionService",
+        "ModalService"
     ];
 
     function DocumentController(
         $scope, generator, documentsService, documentsHubService,
-        $routeParams, Logoot, LogootText, caretService) {
+        $routeParams, Logoot, LogootText, caretService, modalService) {
 
         var vm = this;
 
@@ -32,6 +33,8 @@
         vm.paste = paste;
         vm.keypress = keypress;
         vm.keydown = keydown;
+
+        vm.showRenameDialog = showRenameDialog;
 
         var documentId = $routeParams.documentId;
         var hubConnection = undefined;
@@ -253,7 +256,7 @@
 
         /**
          * Finds agent identifier.
-         * @param {array} collaborators - collaborators..
+         * @param {array} collaborators - collaborators.
          * @param {string} connectionId - connection identifier.
          */
         function findAgentId(collaborators, connectionId) {
@@ -262,8 +265,32 @@
                     return collaborators[i].id;
                 }
             }
+        }
 
-            return connectionId.replace(/-/g, "");
+        /**
+         * Displays a rename document dialog.
+         */
+        function showRenameDialog() {
+            modalService.showModal({
+                templateUrl: "editor.rename-document.html",
+                controller: "RenameDocumentController",
+                controllerAs: "vm",
+                inputs: {
+                    name: vm.document.name
+                }
+            }).then(function (modal) {
+                modal.element.modal();
+                modal.close.then(renameDocument);
+            });
+        }
+
+        /**
+         * Changes the document name.
+         * @param {string} name - new document name.
+         */
+        function renameDocument(name) {
+            vm.document.name = name;
+            documentsService.update(vm.document);
         }
     }
 })();
