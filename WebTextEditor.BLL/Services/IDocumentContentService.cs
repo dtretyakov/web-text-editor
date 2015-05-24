@@ -24,5 +24,11 @@ namespace WebTextEditor.BLL.Services
         /// <param name="documentId">Document identifier.</param>
         /// <returns>Content.</returns>
         Task<Dictionary<string, string>> GetCurrentContentAsync(string documentId);
+
+        /// <summary>
+        ///     Removes a whole document contents.
+        /// </summary>
+        /// <param name="documentId">Document identifier.</param>
+        Task RemoveAllAsync(string documentId);
     }
 }

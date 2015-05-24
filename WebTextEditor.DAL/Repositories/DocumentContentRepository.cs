@@ -16,6 +16,15 @@ namespace WebTextEditor.DAL.Repositories
             }
         }
 
+        public async Task RemoveAllAsync(string documentId)
+        {
+            using (var db = new DataContext())
+            {
+                db.DocumentContents.RemoveRange(db.DocumentContents.Where(p => p.DocumentId == documentId));
+                await db.SaveChangesAsync();
+            }
+        }
+
         public async Task AddAsync(DocumentContentEntity content)
         {
             using (var db = new DataContext())

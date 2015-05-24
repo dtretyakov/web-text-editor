@@ -89,7 +89,10 @@ namespace WebTextEditor.BLL.Services
                 throw new ForiddenException(string.Format("Access to the document {0} forbidden.", documentId));
             }
 
-            await _documentsRepository.RemoveAsync(document);
+            await Task.WhenAll(
+                _documentsRepository.RemoveAsync(document),
+                _documentContentService.RemoveAllAsync(document.Id));
+
         }
 
         public async Task UpdateAsync(Document document)

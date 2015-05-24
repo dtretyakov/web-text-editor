@@ -27,5 +27,11 @@ namespace WebTextEditor.DAL.Repositories
         /// <param name="documentId">Document identifier.</param>
         /// <returns>Content.</returns>
         Task<List<DocumentContentEntity>> GetAllAsync(string documentId);
+
+        /// <summary>
+        ///     Removes a whole document content.
+        /// </summary>
+        /// <param name="documentId">Document identifier.</param>
+        Task RemoveAllAsync(string documentId);
     }
 }

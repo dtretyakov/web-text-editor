@@ -39,5 +39,10 @@ namespace WebTextEditor.BLL.Services
 
             return content.ToDictionary(p => p.Id, p => p.Value);
         }
+
+        public Task RemoveAllAsync(string documentId)
+        {
+            return _contentRepository.RemoveAllAsync(documentId);
+        }
     }
 }
