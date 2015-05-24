@@ -46,6 +46,7 @@
         var logoot = this.logoot;
         var ids = logoot.ids;
         agent || (agent = this.agent);
+        chars = chars.replace(/[\r\n]{1,2}/g, "\n");
         for (var i = 0, l = chars.length; i < l; i++) {
             var id = logoot.genId(ids[index + i], ids[index + i + 1], agent);
             var op = logoot.ins(id, chars.charAt(i), agent, index + i);
