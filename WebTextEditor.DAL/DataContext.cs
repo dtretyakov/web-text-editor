@@ -13,6 +13,7 @@ namespace WebTextEditor.DAL
         public DataContext()
             : base("DefaultConnection")
         {
+            Configuration.AutoDetectChangesEnabled = false;
         }
 
         /// <summary>

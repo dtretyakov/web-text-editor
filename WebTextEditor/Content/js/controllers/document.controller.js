@@ -70,14 +70,14 @@
                 documentsService.get(documentId)
                     .then(processDocument)
                     .catch(leaveDocument);
+
+                $scope.$watch("vm.input.start", function (value) {
+                    connection.setCaret(documentId, value);
+                });
             });
 
             $scope.$on("$destroy", function() {
                 connection.leaveDocument(documentId);
-            });
-
-            $scope.$watch("vm.input.start", function(value) {
-                connection.setCaret(documentId, value);
             });
         }
 
@@ -231,6 +231,7 @@
          * @param {string} value - character.
          */
         function addCharacterOperation(id, value) {
+            if (!text) return;
             text.applyOp(["ins", id, value]);
         }
 
@@ -239,6 +240,7 @@
          * @param {string} id - identifier.
          */
         function removeCharacterOperation(id) {
+            if (!text) return;
             text.applyOp(["del", id]);
         }
 

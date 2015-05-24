@@ -28,7 +28,7 @@
             var message = error.status + " " + error.statusText;
             toastr.error(message, null, {
                 closeButton: true,
-                timeOut: 20000
+                timeOut: 10000
             });
 
             return $q.reject(error);

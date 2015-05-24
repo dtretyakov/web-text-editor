@@ -19,7 +19,7 @@
         function connect() {
 
             var deferred = $q.defer();
-            var documentsHub = $.connection.documentsHub;
+            var documentsHub = $.connection.docs;
 
             documentsHub.client.addCollaborator = function() {
                 executeFunction(clientFunctions.addCollaborator, arguments);

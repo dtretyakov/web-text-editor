@@ -12,7 +12,9 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                return await db.DocumentContents.Where(p => p.DocumentId == documentId).ToListAsync();
+                return await db.DocumentContents
+                    .Where(p => p.DocumentId == documentId)
+                    .ToListAsync();
             }
         }
 
@@ -20,7 +22,10 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                db.DocumentContents.RemoveRange(db.DocumentContents.Where(p => p.DocumentId == documentId));
+                var query = db.DocumentContents.Where(p => p.DocumentId == documentId);
+
+                db.DocumentContents.RemoveRange(query);
+
                 await db.SaveChangesAsync();
             }
         }
@@ -29,7 +34,8 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                db.DocumentContents.Add(content);
+                db.DocumentContents.AddRange(new[] {content});
+
                 await db.SaveChangesAsync();
             }
         }
@@ -38,8 +44,11 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                db.DocumentContents.Attach(document);
-                db.DocumentContents.Remove(document);
+                var query = db.DocumentContents.Where(
+                    p => p.DocumentId == document.DocumentId && p.Id == document.Id);
+
+                db.DocumentContents.RemoveRange(query);
+
                 await db.SaveChangesAsync();
             }
         }

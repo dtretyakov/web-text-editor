@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 using WebTextEditor.BLL.Services;
 using WebTextEditor.Domain.DTO;
 
@@ -10,6 +11,7 @@ namespace WebTextEditor.Hubs
     ///     Handles collaborative document editing.
     /// </summary>
     [Authorize]
+    [HubName("docs")]
     public class DocumentsHub : Hub
     {
         private readonly IDocumentCollaboratorsService _collaboratorService;
