@@ -41,6 +41,8 @@
         var documentId = $routeParams.documentId;
         var hubConnection = undefined;
         var text = undefined;
+        var undoredoActions = [];
+        var lastModification = undefined;
 
         activate();
 
@@ -71,7 +73,7 @@
                     .then(processDocument)
                     .catch(leaveDocument);
 
-                $scope.$watch("vm.input.start", function (value) {
+                $scope.$watch("vm.input.start", function(value) {
                     connection.setCaret(documentId, value);
                 });
             });
@@ -152,7 +154,10 @@
          */
         function cut(event) {
             var selection = inputService.getSelection(event.target);
-            deleteText(selection.start, selection.end);
+
+            undoredoActions = [];
+
+            removeText(selection);
         }
 
         /**
@@ -162,11 +167,11 @@
         function paste(event) {
             var selection = inputService.getSelection(event.target);
             var clipboardData = event.originalEvent.clipboardData;
-
-            deleteText(selection.start, selection.end);
-
             var value = clipboardData.getData("Text");
-            text.ins(selection.start, value);
+
+            undoredoActions = [];
+
+            insertText(selection, value);
         }
 
         /**
@@ -176,6 +181,9 @@
         function keypress(event) {
             var character = inputService.getChar(event);
             if (!character) return;
+
+            undoredoActions = [];
+            lastModification = undefined;
 
             var selection = inputService.getSelection(event.target);
 
@@ -212,6 +220,32 @@
                     text.del(selection.start);
                 }
             }
+
+            // Ctrl + z shortcut
+            if (event.ctrlKey && keyCode === 90) {
+                if (undoredoActions.length !== 0 ||
+                    typeof lastModification == "undefined") {
+
+                    event.preventDefault();
+                    return;
+                }
+
+                undoredoActions.push(lastModification);
+                undoredoAction(lastModification);
+            }
+
+            // Ctrl + y shortcut
+            if (event.ctrlKey && keyCode === 89) {
+                if (undoredoActions.length !== 1 ||
+                    typeof lastModification == "undefined") {
+
+                    event.preventDefault();
+                    return;
+                }
+
+                undoredoActions.pop();
+                undoredoAction(lastModification);
+            }
         }
 
         /**
@@ -222,6 +256,18 @@
         function deleteText(start, end) {
             for (var len = end - start + 1; --len;) {
                 text.del(start);
+            }
+        }
+
+        /**
+         * Undo / redo last action
+         * @param {array} operation - last operation.
+         */
+        function undoredoAction(operation) {
+            if (operation[0] === "ins") {
+                removeText(operation[1]);
+            } else if (operation[0] === "del") {
+                insertText(operation[1], operation[2]);
             }
         }
 
@@ -299,7 +345,7 @@
          */
         function insertDocumentCharacter(index, text) {
             inputService.replaceText(vm.input.element, index, index, text);
-            $scope.$broadcast('elastic:adjust');
+            $scope.$broadcast("elastic:adjust");
         }
 
         /**
@@ -308,7 +354,33 @@
          */
         function removeDocumentCharacter(index) {
             inputService.replaceText(vm.input.element, index, index + 1, "");
-            $scope.$broadcast('elastic:adjust');
+            $scope.$broadcast("elastic:adjust");
+        }
+
+        /**
+         * Inserts text into data structure.
+         * @param {object} selection - range.
+         * @param {string} chars - text.
+         */
+        function insertText(selection, chars) {
+            var value = LogootText.filterText(chars);
+            lastModification = ["ins", { start: selection.start, end: selection.start + value.length }, value];
+
+            deleteText(selection.start, selection.end);
+
+            text.ins(selection.start, value);
+        }
+
+        /**
+         * Removes text from data structure.
+         * @param {object} selection - range.
+         */
+        function removeText(selection) {
+            var value = text.str.substring(selection.start, selection.end);
+
+            lastModification = ["del", { start: selection.start, end: selection.start }, value];
+
+            deleteText(selection.start, selection.end);
         }
     }
 })();

@@ -46,15 +46,16 @@
         var logoot = this.logoot;
         var ids = logoot.ids;
         agent || (agent = this.agent);
-        chars = chars.replace(/[\r\n]{1,2}/g, "\n");
-        for (var i = 0, l = chars.length; i < l; i++) {
+        var text = LogootText.filterText(chars);
+
+        for (var i = 0, l = text.length; i < l; i++) {
             var id = logoot.genId(ids[index + i], ids[index + i + 1], agent);
-            var op = logoot.ins(id, chars.charAt(i), agent, index + i);
+            var op = logoot.ins(id, text.charAt(i), agent, index + i);
             this.emit("logoot.op", op);
         }
 
         var str = this.str;
-        this.str = str.substring(0, index) + chars + str.substring(index, str.length);
+        this.str = str.substring(0, index) + text + str.substring(index, str.length);
     };
 
     /**
@@ -84,6 +85,16 @@
         // handlers decalred in our constructor `LogootText`. The event handlers take
         // care of updating `this.str`
         this.logoot.applyOp(op);
+    };
+
+    /**
+     * Filters a text value.
+     *
+     * @param {String} text - source text
+     * @return {String} filtered value
+     */
+    LogootText.filterText = function(text) {
+        return text.replace(/[\r\n]{1,2}/g, "\n");
     };
 
     /**
