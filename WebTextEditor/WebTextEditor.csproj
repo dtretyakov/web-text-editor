@@ -284,6 +284,7 @@
     <Content Include="Content\js\editor.module.js" />
     <Content Include="Content\js\factories\httpInterceptor.factory.js" />
     <Content Include="Content\js\factories\exceptionHandler.factory.js" />
+    <Content Include="Content\js\services\text.service.js" />
     <Content Include="Content\js\services\inputelement.service.js" />
     <Content Include="Content\js\services\auth.service.js" />
     <Content Include="Content\js\services\documents.service.js" />
@@ -332,6 +333,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\js\services\documentshub.service.js" />
     <Content Include="Content\js\directives\confirmclick.directive.js" />
+    <Content Include="Content\js\services\collaborator.service.js" />
     <None Include="Properties\PublishProfiles\dtretyakov.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />

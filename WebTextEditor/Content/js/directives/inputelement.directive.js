@@ -30,6 +30,11 @@
 
             element.on("blur", function() {
                 element.off("mousemove", updatePosition);
+                scope.$apply(function() {
+                    scope.eInput.start = undefined;
+                    scope.eInput.end = undefined;
+                });
+
             });
 
             function updatePosition() {

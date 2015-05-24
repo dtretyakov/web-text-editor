@@ -12,9 +12,11 @@
             "services.data",
             "services.hubs",
             "services.input",
+            "services.text",
             "services.exceptions",
             "services.generators",
             "services.interceptors",
+            "services.collaborator",
             "monospaced.elastic",
             "angularModalService"
         ])
