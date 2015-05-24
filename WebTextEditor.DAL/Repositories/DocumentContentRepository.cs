@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Core;
 using System.Linq;
 using System.Threading.Tasks;
-using EntityFramework.Extensions;
 using WebTextEditor.DAL.Models;
 
 namespace WebTextEditor.DAL.Repositories
@@ -15,7 +12,8 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                return await db.DocumentContents.AsNoTracking()
+                return await db.DocumentContents
+                    .AsNoTracking()
                     .Where(p => p.DocumentId == documentId)
                     .ToListAsync();
             }
@@ -25,51 +23,29 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                await db.DocumentContents
-                    .Where(p => p.DocumentId == documentId)
-                    .DeleteAsync();
+                await db.Database.ExecuteSqlCommandAsync(
+                    "DELETE FROM DocumentContent WHERE DocumentId = {0}",
+                    documentId);
             }
         }
 
-        public Task AddAsync(DocumentContentEntity content)
+        public async Task AddAsync(DocumentContentEntity content)
         {
-            return ExecuteSqlAction(async () =>
+            using (var db = new DataContext())
             {
-                using (var db = new DataContext())
-                {
-                    db.DocumentContents.AddRange(new[] {content});
-
-                    await db.SaveChangesAsync();
-                }
-            });
+                await db.Database.ExecuteSqlCommandAsync(
+                    "INSERT INTO DocumentContent (DocumentId, Id, Value) VALUES ({0}, {1}, {2})",
+                    content.DocumentId, content.Id, content.Value);
+            }
         }
 
         public async Task RemoveAsync(DocumentContentEntity content)
         {
             using (var db = new DataContext())
             {
-                await db.DocumentContents
-                    .Where(p => p.DocumentId == content.DocumentId && p.Id == content.Id)
-                    .DeleteAsync();
-            }
-        }
-
-        /// <summary>
-        ///     Executes action until successful completion.
-        /// </summary>
-        /// <param name="action">Action.</param>
-        private static async Task ExecuteSqlAction(Func<Task> action)
-        {
-            while (true)
-            {
-                try
-                {
-                    await action();
-                }
-                catch (EntityException)
-                {
-                    // Caused by connection timeout
-                }
+                await db.Database.ExecuteSqlCommandAsync(
+                    "DELETE FROM DocumentContent WHERE DocumentId = {0} AND Id = {1}",
+                    content.DocumentId, content.Id);
             }
         }
     }

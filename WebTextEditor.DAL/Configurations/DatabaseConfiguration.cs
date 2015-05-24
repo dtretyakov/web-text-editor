@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using WebTextEditor.DAL.Infrastructure;
+using System.Data.Entity.SqlServer;
 
 namespace WebTextEditor.DAL.Configurations
 {
@@ -7,7 +7,7 @@ namespace WebTextEditor.DAL.Configurations
     {
         public DatabaseConfiguration()
         {
-            SetExecutionStrategy("System.Data.SqlClient", () => new SqlAzureRequestLimitExecutionPolicy());
+            SetExecutionStrategy("System.Data.SqlClient", () => new SqlAzureExecutionStrategy());
         }
     }
 }

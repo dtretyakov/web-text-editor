@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebTextEditor.DAL.Models;
@@ -13,7 +12,10 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                return await db.DocumentCollaborators.Where(p => p.DocumentId == documentId).ToListAsync();
+                return await db.DocumentCollaborators
+                    .AsNoTracking()
+                    .Where(p => p.DocumentId == documentId)
+                    .ToListAsync();
             }
         }
 
@@ -21,7 +23,10 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                return await db.DocumentCollaborators.Where(p => p.ConnectionId == connectionId).ToListAsync();
+                return await db.DocumentCollaborators
+                    .AsNoTracking()
+                    .Where(p => p.ConnectionId == connectionId)
+                    .ToListAsync();
             }
         }
 
@@ -29,7 +34,8 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                db.DocumentCollaborators.AddOrUpdate(collaborator);
+                db.DocumentCollaborators.AddRange(new[] {collaborator});
+
                 await db.SaveChangesAsync();
             }
         }
@@ -39,7 +45,9 @@ namespace WebTextEditor.DAL.Repositories
             using (var db = new DataContext())
             {
                 db.DocumentCollaborators.Attach(collaborator);
+
                 db.Entry(collaborator).State = EntityState.Modified;
+
                 await db.SaveChangesAsync();
             }
         }
@@ -48,8 +56,11 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                db.DocumentCollaborators.Attach(document);
-                db.DocumentCollaborators.Remove(document);
+                var query = db.DocumentCollaborators
+                    .Where(p => p.DocumentId == document.DocumentId && p.ConnectionId == document.ConnectionId);
+
+                db.DocumentCollaborators.RemoveRange(query);
+
                 await db.SaveChangesAsync();
             }
         }

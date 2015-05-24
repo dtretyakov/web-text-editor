@@ -12,7 +12,9 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                return await db.Documents.FirstOrDefaultAsync(p => p.Id == documentId);
+                return await db.Documents
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.Id == documentId);
             }
         }
 
@@ -20,7 +22,9 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                return await db.Documents.OrderByDescending(p => p.Created).ToListAsync();
+                return await db.Documents
+                    .OrderByDescending(p => p.Created)
+                    .ToListAsync();
             }
         }
 
@@ -28,7 +32,8 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                db.Documents.Add(document);
+                db.Documents.AddRange(new[] {document});
+
                 await db.SaveChangesAsync();
             }
         }
@@ -38,7 +43,9 @@ namespace WebTextEditor.DAL.Repositories
             using (var db = new DataContext())
             {
                 db.Documents.Attach(document);
+
                 db.Entry(document).State = EntityState.Modified;
+
                 await db.SaveChangesAsync();
             }
         }
@@ -47,8 +54,10 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                db.Documents.Attach(document);
-                db.Documents.Remove(document);
+                var query = db.Documents.Where(p => p.Id == document.Id);
+
+                db.Documents.RemoveRange(query);
+
                 await db.SaveChangesAsync();
             }
         }
