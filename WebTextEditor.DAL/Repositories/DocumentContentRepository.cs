@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Threading.Tasks;
+using EntityFramework.Extensions;
 using WebTextEditor.DAL.Models;
 
 namespace WebTextEditor.DAL.Repositories
@@ -24,35 +25,51 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                var query = db.DocumentContents
-                    .Where(p => p.DocumentId == documentId);
-
-                db.DocumentContents.RemoveRange(query);
-
-                await db.SaveChangesAsync();
+                await db.DocumentContents
+                    .Where(p => p.DocumentId == documentId)
+                    .DeleteAsync();
             }
         }
 
-        public async Task AddAsync(DocumentContentEntity content)
+        public Task AddAsync(DocumentContentEntity content)
+        {
+            return ExecuteSqlAction(async () =>
+            {
+                using (var db = new DataContext())
+                {
+                    db.DocumentContents.AddRange(new[] {content});
+
+                    await db.SaveChangesAsync();
+                }
+            });
+        }
+
+        public async Task RemoveAsync(DocumentContentEntity content)
         {
             using (var db = new DataContext())
             {
-                db.DocumentContents.AddRange(new[] {content});
-
-                await ((IObjectContextAdapter)db).ObjectContext.SaveChangesAsync(SaveOptions.None);
+                await db.DocumentContents
+                    .Where(p => p.DocumentId == content.DocumentId && p.Id == content.Id)
+                    .DeleteAsync();
             }
         }
 
-        public async Task RemoveAsync(DocumentContentEntity document)
+        /// <summary>
+        ///     Executes action until successful completion.
+        /// </summary>
+        /// <param name="action">Action.</param>
+        private static async Task ExecuteSqlAction(Func<Task> action)
         {
-            using (var db = new DataContext())
+            while (true)
             {
-                var query = db.DocumentContents.Where(
-                    p => p.DocumentId == document.DocumentId && p.Id == document.Id);
-
-                db.DocumentContents.RemoveRange(query);
-
-                await db.SaveChangesAsync();
+                try
+                {
+                    await action();
+                }
+                catch (EntityException)
+                {
+                    // Caused by connection timeout
+                }
             }
         }
     }

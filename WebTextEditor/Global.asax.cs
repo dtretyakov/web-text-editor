@@ -27,7 +27,7 @@ namespace WebTextEditor
             MvcHandler.DisableMvcResponseHeader = true;
 
             // Setup outbound connections settings
-            ServicePointManager.DefaultConnectionLimit = int.MaxValue;
+            ServicePointManager.DefaultConnectionLimit = 30;
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.Expect100Continue = false;
         }

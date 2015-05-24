@@ -1,7 +1,7 @@
 ﻿<script type="text/ng-template" id="editor.documents.html">
 
     <div class="row ng-hide animate-show" ng-show="!vm.isLoading">
-        <div ng-repeat="document in vm.documents" class="col-md-4">
+        <div ng-repeat-start="document in vm.documents" class="col-md-4">
             <h3><a href="/documents/{{document.id}}">{{document.name}}</a></h3>
             <p>Authored: {{document.userId}}</p>
             <p>Created: {{document.created | date: "medium"}}</p>
@@ -13,6 +13,8 @@
                 </a>
             </p>
         </div>
+        <div class="clearfix" ng-if="$index%3==2"></div>
+        <div ng-repeat-end=""></div>
         <div class="col-md-12 ng-hide" ng-show="vm.documents.length === 0">
             <h3>No documents, please create a new one.</h3>
         </div>

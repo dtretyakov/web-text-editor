@@ -35,6 +35,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.Extended">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.133\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
@@ -53,6 +56,7 @@
     <Compile Include="Configurations\DocumentContentEntityConfiguration.cs" />
     <Compile Include="Configurations\DocumentEntityConfiguration.cs" />
     <Compile Include="DataContext.cs" />
+    <Compile Include="Infrastructure\SqlAzureRequestExecutionPolicy.cs" />
     <Compile Include="Migrations\201505162219046_Initial.cs" />
     <Compile Include="Migrations\201505162219046_Initial.Designer.cs">
       <DependentUpon>201505162219046_Initial.cs</DependentUpon>
@@ -99,7 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201505162219046_Initial.resx">
