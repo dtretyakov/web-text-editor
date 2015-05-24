@@ -299,6 +299,7 @@
          */
         function insertDocumentCharacter(index, text) {
             inputService.replaceText(vm.input.element, index, index, text);
+            $scope.$broadcast('elastic:adjust');
         }
 
         /**
@@ -307,6 +308,7 @@
          */
         function removeDocumentCharacter(index) {
             inputService.replaceText(vm.input.element, index, index + 1, "");
+            $scope.$broadcast('elastic:adjust');
         }
     }
 })();
