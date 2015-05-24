@@ -48,13 +48,14 @@
      */
     Logoot.prototype.ins = function(id, atom, agent, insertAfter) {
         var ids = this.ids;
-        if (typeof insertAfter == "undefined") {
-            insertAfter = indexOfGreatestLessThan(ids, id, compare);
+        var index = insertAfter;
+        if (typeof index == "undefined") {
+            index = indexOfGreatestLessThan(ids, id, compare);
         }
-        ids.splice(insertAfter + 1, 0, id);
+        ids.splice(index + 1, 0, id);
         this.atoms[serializeId(id)] = atom;
         if (arguments.length < 4) {
-            this.emit("ins", insertAfter, atom);
+            this.emit("ins", index, atom);
         }
         return ["ins", id, atom, agent];
     };
@@ -118,21 +119,29 @@
      * @param {String} agent is the id of the author creating the id
      * @return {Array} id between from and to
      */
-    Logoot.prototype.genId = function(from, to, agent, depth) {
+    Logoot.prototype.genId = function(from, to, agent) {
 
-        // base depends on depth of identifiers
-        depth = depth || 0;
-        var base = Math.pow(2, POWER + depth);
+        var depth = 0;
+        var id = [];
 
-        var min = from[0] || 0;
-        var max = to[0] || base;
-        if (min < max - 1) {
-            var id = generateIntBtwn(min, max, depth);
-            return [id, agent, clock++];
+        while (true) {
+            // base depends on depth of identifiers
+            var base = Math.pow(2, POWER + depth);
+
+            var min = from[0] || 0;
+            var max = to[0] || base;
+
+            if (min < max - 1) {
+                var value = generateIntBtwn(min, max, depth);
+                return id.concat([value, agent, clock++]);
+            }
+
+            id = id.concat([min, from[1] || agent, from[2] || 0]);
+
+            from = from.slice(3);
+            to = to.slice(3);
+            depth++;
         }
-
-        return [from[0] || 0, from[1] || agent, from[2] || 0]
-            .concat(this.genId(from.slice(3), to.slice(3), agent, depth + 1));
     };
 
     /**
