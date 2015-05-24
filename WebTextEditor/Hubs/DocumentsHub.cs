@@ -102,7 +102,7 @@ namespace WebTextEditor.Hubs
         /// <param name="value">Character value.</param>
         public Task AddChar(string documentId, string charId, string value)
         {
-            Clients.Others.addChar(charId, value);
+            Clients.OthersInGroup(documentId).addChar(charId, value);
 
             var content = new DocumentContent
             {
