@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using WebTextEditor.DAL.Models;
@@ -12,7 +14,7 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                return await db.DocumentContents
+                return await db.DocumentContents.AsNoTracking()
                     .Where(p => p.DocumentId == documentId)
                     .ToListAsync();
             }
@@ -22,7 +24,8 @@ namespace WebTextEditor.DAL.Repositories
         {
             using (var db = new DataContext())
             {
-                var query = db.DocumentContents.Where(p => p.DocumentId == documentId);
+                var query = db.DocumentContents
+                    .Where(p => p.DocumentId == documentId);
 
                 db.DocumentContents.RemoveRange(query);
 
@@ -36,7 +39,7 @@ namespace WebTextEditor.DAL.Repositories
             {
                 db.DocumentContents.AddRange(new[] {content});
 
-                await db.SaveChangesAsync();
+                await ((IObjectContextAdapter)db).ObjectContext.SaveChangesAsync(SaveOptions.None);
             }
         }
 
