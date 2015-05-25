@@ -16,7 +16,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{908946
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTextEditor.BLL.Tests", "WebTextEditor.BLL.Tests\WebTextEditor.BLL.Tests.csproj", "{56B0FBBF-BAA9-4E77-BC4F-5E82166AEA8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{48AB1B2D-ADA2-4F7F-AE67-5492F04232F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,8 +45,15 @@ Global
 		{08B1BB68-EFF1-4E8D-8859-9EA557B55CD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08B1BB68-EFF1-4E8D-8859-9EA557B55CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08B1BB68-EFF1-4E8D-8859-9EA557B55CD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56B0FBBF-BAA9-4E77-BC4F-5E82166AEA8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56B0FBBF-BAA9-4E77-BC4F-5E82166AEA8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56B0FBBF-BAA9-4E77-BC4F-5E82166AEA8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56B0FBBF-BAA9-4E77-BC4F-5E82166AEA8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{56B0FBBF-BAA9-4E77-BC4F-5E82166AEA8D} = {48AB1B2D-ADA2-4F7F-AE67-5492F04232F0}
 	EndGlobalSection
 EndGlobal
