@@ -12,18 +12,18 @@ namespace WebTextEditor.BLL.Services
     /// <summary>
     ///     Provides document management facilities.
     /// </summary>
-    public sealed class DocumentsService : IDocumentsService
+    public sealed class DocumentService : IDocumentService
     {
         private const string NewDocumentName = "New Document";
-        private readonly IDocumentCollaboratorsService _collaboratorsService;
+        private readonly IDocumentCollaboratorService _collaboratorsService;
         private readonly IDocumentContentService _documentContentService;
-        private readonly IDocumentsRepository _documentsRepository;
+        private readonly IDocumentRepository _documentsRepository;
         private readonly IMappingEngine _mapper;
 
-        public DocumentsService(
-            IDocumentsRepository documentsRepository,
+        public DocumentService(
+            IDocumentRepository documentsRepository,
             IDocumentContentService documentContentService,
-            IDocumentCollaboratorsService collaboratorsService,
+            IDocumentCollaboratorService collaboratorsService,
             IMappingEngine mapper)
         {
             _documentsRepository = documentsRepository;

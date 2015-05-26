@@ -7,7 +7,7 @@ namespace WebTextEditor.DAL.Repositories
     /// <summary>
     ///     Provides access to the document collaborators database collection.
     /// </summary>
-    public interface IDocumentCollaboratorsRepository
+    public interface IDocumentCollaboratorRepository
     {
         /// <summary>
         ///     Adds a new collaborator.

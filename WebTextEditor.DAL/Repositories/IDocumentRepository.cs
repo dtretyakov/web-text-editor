@@ -7,7 +7,7 @@ namespace WebTextEditor.DAL.Repositories
     /// <summary>
     ///     Provides access to the documents database collection.
     /// </summary>
-    public interface IDocumentsRepository
+    public interface IDocumentRepository
     {
         /// <summary>
         ///     Gets a docuemnt by identifier.

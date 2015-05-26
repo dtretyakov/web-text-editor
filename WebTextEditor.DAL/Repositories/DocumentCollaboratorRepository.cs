@@ -6,7 +6,7 @@ using WebTextEditor.DAL.Models;
 
 namespace WebTextEditor.DAL.Repositories
 {
-    public sealed class DocumentCollaboratorsRepository : IDocumentCollaboratorsRepository
+    public sealed class DocumentCollaboratorRepository : IDocumentCollaboratorRepository
     {
         public async Task<List<DocumentCollaboratorEntity>> FindByDocumentAsync(string documentId)
         {

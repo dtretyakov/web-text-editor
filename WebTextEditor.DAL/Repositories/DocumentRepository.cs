@@ -6,7 +6,7 @@ using WebTextEditor.DAL.Models;
 
 namespace WebTextEditor.DAL.Repositories
 {
-    public sealed class DocumentsRepository : IDocumentsRepository
+    public sealed class DocumentRepository : IDocumentRepository
     {
         public async Task<DocumentEntity> GetAsync(string documentId)
         {

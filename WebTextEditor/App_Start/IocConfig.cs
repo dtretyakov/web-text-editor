@@ -60,14 +60,14 @@ namespace WebTextEditor
             container.Register(() => Mapper.Engine);
 
             // BLL
-            container.Register<IDocumentsService, DocumentsService>();
+            container.Register<IDocumentService, DocumentService>();
             container.Register<IDocumentContentService, DocumentContentService>();
-            container.Register<IDocumentCollaboratorsService, DocumentCollaboratorsService>();
+            container.Register<IDocumentCollaboratorService, DocumentCollaboratorService>();
 
             // DAL
-            container.Register<IDocumentsRepository, DocumentsRepository>();
+            container.Register<IDocumentRepository, DocumentRepository>();
             container.Register<IDocumentContentRepository, DocumentContentRepository>();
-            container.Register<IDocumentCollaboratorsRepository, DocumentCollaboratorsRepository>();
+            container.Register<IDocumentCollaboratorRepository, DocumentCollaboratorRepository>();
 
             // SignalR stuff
             container.Register<IDependencyResolver, SimpleInjectorResolver>();

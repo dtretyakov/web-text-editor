@@ -48,12 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mappings\DocumentsProfile.cs" />
-    <Compile Include="Services\DocumentCollaboratorsService.cs" />
+    <Compile Include="Services\DocumentCollaboratorService.cs" />
     <Compile Include="Services\DocumentContentService.cs" />
-    <Compile Include="Services\DocumentsService.cs" />
-    <Compile Include="Services\IDocumentCollaboratorsService.cs" />
+    <Compile Include="Services\DocumentService.cs" />
+    <Compile Include="Services\IDocumentCollaboratorService.cs" />
     <Compile Include="Services\IDocumentContentService.cs" />
-    <Compile Include="Services\IDocumentsService.cs" />
+    <Compile Include="Services\IDocumentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

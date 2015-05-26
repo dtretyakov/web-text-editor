@@ -7,7 +7,7 @@ namespace WebTextEditor.BLL.Services
     /// <summary>
     ///     Provides document management facilities.
     /// </summary>
-    public interface IDocumentsService
+    public interface IDocumentService
     {
         /// <summary>
         ///     Gets a document by identifier.

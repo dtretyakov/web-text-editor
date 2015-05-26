@@ -578,7 +578,7 @@
                 Provides a document management facilities.
             </summary>
         </member>
-        <member name="M:WebTextEditor.Controllers.DocumentsController.#ctor(WebTextEditor.BLL.Services.IDocumentsService,Microsoft.AspNet.SignalR.Infrastructure.IConnectionManager)">
+        <member name="M:WebTextEditor.Controllers.DocumentsController.#ctor(WebTextEditor.BLL.Services.IDocumentService,Microsoft.AspNet.SignalR.Infrastructure.IConnectionManager)">
             <summary>
                 Constructor.
             </summary>
@@ -628,7 +628,7 @@
                 Handles collaborative document editing.
             </summary>
         </member>
-        <member name="M:WebTextEditor.Hubs.DocumentsHub.#ctor(WebTextEditor.BLL.Services.IDocumentCollaboratorsService,WebTextEditor.BLL.Services.IDocumentContentService)">
+        <member name="M:WebTextEditor.Hubs.DocumentsHub.#ctor(WebTextEditor.BLL.Services.IDocumentCollaboratorService,WebTextEditor.BLL.Services.IDocumentContentService)">
             <summary>
                 Constructor.
             </summary>

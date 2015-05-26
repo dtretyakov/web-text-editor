@@ -7,12 +7,12 @@ using WebTextEditor.Domain.DTO;
 
 namespace WebTextEditor.BLL.Services
 {
-    public sealed class DocumentCollaboratorsService : IDocumentCollaboratorsService
+    public sealed class DocumentCollaboratorService : IDocumentCollaboratorService
     {
-        private readonly IDocumentCollaboratorsRepository _collaboratorsRepository;
+        private readonly IDocumentCollaboratorRepository _collaboratorsRepository;
         private readonly IMappingEngine _mapper;
 
-        public DocumentCollaboratorsService(IDocumentCollaboratorsRepository collaboratorsRepository, IMappingEngine mapper)
+        public DocumentCollaboratorService(IDocumentCollaboratorRepository collaboratorsRepository, IMappingEngine mapper)
         {
             _collaboratorsRepository = collaboratorsRepository;
             _mapper = mapper;

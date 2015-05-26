@@ -15,13 +15,13 @@ namespace WebTextEditor.Controllers
     [RoutePrefix("api/documents")]
     public sealed class DocumentsController : ApiController
     {
-        private readonly IDocumentsService _documentsService;
+        private readonly IDocumentService _documentsService;
         private readonly IConnectionManager _connectionManager;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public DocumentsController(IDocumentsService documentsService, IConnectionManager connectionManager)
+        public DocumentsController(IDocumentService documentsService, IConnectionManager connectionManager)
         {
             _documentsService = documentsService;
             _connectionManager = connectionManager;

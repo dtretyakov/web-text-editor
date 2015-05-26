@@ -4,7 +4,7 @@ using WebTextEditor.Domain.DTO;
 
 namespace WebTextEditor.BLL.Services
 {
-    public interface IDocumentCollaboratorsService
+    public interface IDocumentCollaboratorService
     {
         /// <summary>
         ///     Adds a new collaborator.

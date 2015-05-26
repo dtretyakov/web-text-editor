@@ -14,7 +14,7 @@ namespace WebTextEditor.Hubs
     [HubName("docs")]
     public class DocumentsHub : Hub
     {
-        private readonly IDocumentCollaboratorsService _collaboratorService;
+        private readonly IDocumentCollaboratorService _collaboratorService;
         private readonly IDocumentContentService _contentService;
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace WebTextEditor.Hubs
         /// </summary>
         /// <param name="collaboratorService">Collaborators services.</param>
         /// <param name="contentService">Documents content service.</param>
-        public DocumentsHub(IDocumentCollaboratorsService collaboratorService, IDocumentContentService contentService)
+        public DocumentsHub(IDocumentCollaboratorService collaboratorService, IDocumentContentService contentService)
         {
             _collaboratorService = collaboratorService;
             _contentService = contentService;
