@@ -15,8 +15,6 @@
     function textService(Logoot, LogootText, inputService, collaboratorService) {
 
         var text = undefined;
-        var undoredoActions = [];
-        var lastModification = undefined;
 
         return {
             createLogoot: createLogoot,
@@ -45,8 +43,6 @@
         function cut(event) {
             var selection = inputService.getSelection(event.target);
 
-            undoredoActions = [];
-
             replaceText(selection.start, selection.end, "");
         }
 
@@ -58,8 +54,6 @@
             var selection = inputService.getSelection(event.target);
             var clipboardData = event.originalEvent.clipboardData;
             var value = clipboardData.getData("Text");
-
-            undoredoActions = [];
 
             replaceText(selection.start, selection.end, value);
         }
@@ -75,9 +69,6 @@
             var selection = inputService.getSelection(event.target);
 
             replaceText(selection.start, selection.end, character);
-
-            undoredoActions = [];
-            lastModification = undefined;
         }
 
         /**
@@ -100,16 +91,12 @@
 
             // Ctrl + z shortcut
             if (event.ctrlKey && keyCode === 90) {
-                if (!undoKeyPress()) {
-                    event.preventDefault();
-                }
+                event.preventDefault();
             }
 
             // Ctrl + y shortcut
             if (event.ctrlKey && keyCode === 89) {
-                if (!redoKeyPress()) {
-                    event.preventDefault();
-                }
+                event.preventDefault();
             }
         }
 
@@ -140,50 +127,6 @@
         }
 
         /**
-         * Executes undo operation.
-         */
-        function undoKeyPress() {
-            if (undoredoActions.length !== 0 ||
-                typeof lastModification == "undefined") {
-
-                return false;
-            }
-
-            undoredoActions.push(lastModification);
-            undoredoAction(lastModification);
-
-            return true;
-        }
-
-        /**
-        * Executes redo operation.
-        */
-        function redoKeyPress() {
-            if (undoredoActions.length !== 1 ||
-                typeof lastModification == "undefined") {
-
-                return false;
-            }
-
-            undoredoActions.pop();
-            undoredoAction(lastModification);
-
-            return true;
-        }
-
-        /**
-         * Undo / redo last action
-         * @param {array} operation - last operation.
-         */
-        function undoredoAction(operation) {
-            var end = operation.prevValue.length > 0
-                ? operation.start
-                : operation.end + operation.newValue.length;
-
-            replaceText(operation.start, end, operation.prevValue);
-        }
-
-        /**
          * Adds a character into the text structure.
          * @param {string} id - identifier.
          * @param {string} value - character.
@@ -211,7 +154,7 @@
         function replaceText(start, end, chars) {
             var value = LogootText.filterText(chars);
 
-            lastModification = {
+            var operation = {
                 start: start,
                 end: end,
                 newValue: value,
@@ -226,7 +169,7 @@
                 text.ins(start, value);
             }
 
-            collaboratorService.updateCarets(lastModification);
+            collaboratorService.updateCarets(operation);
         }
     }
 })();
