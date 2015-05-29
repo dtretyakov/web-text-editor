@@ -4,7 +4,7 @@ using WebTextEditor.Domain.DTO;
 
 namespace WebTextEditor.BLL.Mappings
 {
-    public sealed class DocumentsProfile : Profile
+    public class DocumentsProfile : Profile
     {
         protected override void Configure()
         {

@@ -3,8 +3,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using WebTextEditor.DAL.Models;
+using WebTextEditor.DAL.Repositories;
 
-namespace WebTextEditor.DAL.Repositories
+namespace WebTextEditor.DAL.Sql.Repositories
 {
     public sealed class DocumentContentRepository : IDocumentContentRepository
     {

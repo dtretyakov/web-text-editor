@@ -2,7 +2,7 @@
 using System.Data.Entity.ModelConfiguration;
 using WebTextEditor.DAL.Models;
 
-namespace WebTextEditor.DAL.Configurations
+namespace WebTextEditor.DAL.Sql.Configurations
 {
     public sealed class DocumentCollaboratorEntityConfiguration : EntityTypeConfiguration<DocumentCollaboratorEntity>
     {

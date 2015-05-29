@@ -410,8 +410,12 @@
       <Project>{A77DA4D5-F4E7-49E3-97B4-0BDC6E7D7846}</Project>
       <Name>WebTextEditor.BLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WebTextEditor.DAL.Sql\WebTextEditor.DAL.Sql.csproj">
+      <Project>{08b1bb68-eff1-4e8d-8859-9ea557b55cd2}</Project>
+      <Name>WebTextEditor.DAL.Sql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WebTextEditor.DAL\WebTextEditor.DAL.csproj">
-      <Project>{08B1BB68-EFF1-4E8D-8859-9EA557B55CD2}</Project>
+      <Project>{875bddb3-fa36-4b65-a96e-d350ce0c95ea}</Project>
       <Name>WebTextEditor.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebTextEditor.Domain\WebTextEditor.Domain.csproj">

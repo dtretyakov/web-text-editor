@@ -79,7 +79,7 @@
       <Name>WebTextEditor.BLL</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebTextEditor.DAL\WebTextEditor.DAL.csproj">
-      <Project>{08B1BB68-EFF1-4E8D-8859-9EA557B55CD2}</Project>
+      <Project>{875bddb3-fa36-4b65-a96e-d350ce0c95ea}</Project>
       <Name>WebTextEditor.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\WebTextEditor.Domain\WebTextEditor.Domain.csproj">

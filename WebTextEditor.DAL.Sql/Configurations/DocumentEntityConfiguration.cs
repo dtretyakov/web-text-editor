@@ -3,7 +3,7 @@ using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 using WebTextEditor.DAL.Models;
 
-namespace WebTextEditor.DAL.Configurations
+namespace WebTextEditor.DAL.Sql.Configurations
 {
     public sealed class DocumentEntityConfiguration : EntityTypeConfiguration<DocumentEntity>
     {

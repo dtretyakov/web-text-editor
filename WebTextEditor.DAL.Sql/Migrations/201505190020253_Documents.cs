@@ -1,8 +1,7 @@
-namespace WebTextEditor.DAL.Migrations
+using System.Data.Entity.Migrations;
+
+namespace WebTextEditor.DAL.Sql.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class Documents : DbMigration
     {
         public override void Up()

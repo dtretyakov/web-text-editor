@@ -9,6 +9,7 @@ using WebActivator;
 using WebTextEditor;
 using WebTextEditor.BLL.Services;
 using WebTextEditor.DAL.Repositories;
+using WebTextEditor.DAL.Sql.Repositories;
 using WebTextEditor.Infrastructure;
 
 [assembly: PostApplicationStartMethod(typeof (IocConfig), "Initialize")]

@@ -1,8 +1,8 @@
 ﻿using System.Data.Entity;
-using WebTextEditor.DAL.Configurations;
 using WebTextEditor.DAL.Models;
+using WebTextEditor.DAL.Sql.Configurations;
 
-namespace WebTextEditor.DAL
+namespace WebTextEditor.DAL.Sql
 {
     /// <summary>
     ///     Database context.

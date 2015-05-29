@@ -1,6 +1,6 @@
 using System.Data.Entity.Migrations;
 
-namespace WebTextEditor.DAL.Migrations
+namespace WebTextEditor.DAL.Sql.Migrations
 {
     internal sealed class Configuration : DbMigrationsConfiguration<DataContext>
     {

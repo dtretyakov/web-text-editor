@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.SqlServer;
 
-namespace WebTextEditor.DAL.Configurations
+namespace WebTextEditor.DAL.Sql.Configurations
 {
     public class DatabaseConfiguration : DbConfiguration
     {
