@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTextEditor.Domain", "Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTextEditor.BLL", "WebTextEditor.BLL\WebTextEditor.BLL.csproj", "{A77DA4D5-F4E7-49E3-97B4-0BDC6E7D7846}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTextEditor.DAL", "WebTextEditor.DAL\WebTextEditor.DAL.csproj", "{08B1BB68-EFF1-4E8D-8859-9EA557B55CD2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTextEditor.DAL.Sql", "WebTextEditor.DAL.Sql\WebTextEditor.DAL.csproj", "{08B1BB68-EFF1-4E8D-8859-9EA557B55CD2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{908946A3-B453-4FB0-96BA-6A5C02DB696A}"
 	ProjectSection(SolutionItems) = preProject
