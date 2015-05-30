@@ -94,7 +94,7 @@
      * @return {String} filtered value
      */
     LogootText.filterText = function(text) {
-        return text.replace(/[\r\n]{1,2}/g, "\n");
+        return text.replace(/\r\n?/g, "\n");
     };
 
     /**
