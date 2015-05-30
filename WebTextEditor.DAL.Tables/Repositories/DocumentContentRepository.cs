@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WindowsAzure.Table;
 using WindowsAzure.Table.Extensions;
@@ -33,7 +34,7 @@ namespace WebTextEditor.DAL.Tables.Repositories
 
         public Task RemoveAllAsync(string documentId)
         {
-            return _context.RemoveAsync(new DocumentContentEntity {DocumentId = documentId});
+            return Task.Run(() => { _context.Remove(_context.Where(p => p.DocumentId == documentId)); });
         }
     }
 }
