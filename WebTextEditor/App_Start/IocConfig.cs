@@ -1,15 +1,22 @@
+using System.Configuration;
 using System.Web.Http;
+using WindowsAzure.Table;
+using WindowsAzure.Table.EntityConverters.TypeData;
 using AutoMapper;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.AspNet.SignalR.Infrastructure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
 using WebActivator;
 using WebTextEditor;
 using WebTextEditor.BLL.Services;
+using WebTextEditor.DAL.Models;
 using WebTextEditor.DAL.Repositories;
-using WebTextEditor.DAL.Sql.Repositories;
+using WebTextEditor.DAL.Tables.Mappings;
+using WebTextEditor.DAL.Tables.Repositories;
 using WebTextEditor.Infrastructure;
 
 [assembly: PostApplicationStartMethod(typeof (IocConfig), "Initialize")]
@@ -21,6 +28,14 @@ namespace WebTextEditor
     /// </summary>
     public static class IocConfig
     {
+        /// <summary>
+        ///     Performs type data initialization.
+        /// </summary>
+        static IocConfig()
+        {
+            EntityTypeMap.RegisterAssembly(typeof (DocumentMap).Assembly);
+        }
+
         /// <summary>
         ///     Initialize the container and register it as MVC3 Dependency Resolver.
         /// </summary>
@@ -69,6 +84,28 @@ namespace WebTextEditor
             container.Register<IDocumentRepository, DocumentRepository>();
             container.Register<IDocumentContentRepository, DocumentContentRepository>();
             container.Register<IDocumentCollaboratorRepository, DocumentCollaboratorRepository>();
+
+            // DAL Azure Tables
+            var storageConnection = ConfigurationManager.ConnectionStrings["AzureStorageConnection"];
+            container.Register(() => CloudStorageAccount.Parse(storageConnection.ConnectionString).CreateCloudTableClient());
+            container.Register<ITableSet<DocumentEntity>>(() =>
+            {
+                var table = new TableSet<DocumentEntity>(container.GetInstance<CloudTableClient>());
+                table.CreateIfNotExists();
+                return table;
+            });
+            container.Register<ITableSet<DocumentContentEntity>>(() =>
+            {
+                var table = new TableSet<DocumentContentEntity>(container.GetInstance<CloudTableClient>());
+                table.CreateIfNotExists();
+                return table;
+            });
+            container.Register<ITableSet<DocumentCollaboratorEntity>>(() =>
+            {
+                var table = new TableSet<DocumentCollaboratorEntity>(container.GetInstance<CloudTableClient>());
+                table.CreateIfNotExists();
+                return table;
+            });
 
             // SignalR stuff
             container.Register<IDependencyResolver, SimpleInjectorResolver>();

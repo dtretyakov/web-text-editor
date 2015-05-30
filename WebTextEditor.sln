@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{48AB1B2D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTextEditor.DAL", "WebTextEditor.DAL\WebTextEditor.DAL.csproj", "{875BDDB3-FA36-4B65-A96E-D350CE0C95EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTextEditor.DAL.Tables", "WebTextEditor.DAL.Tables\WebTextEditor.DAL.Tables.csproj", "{E8B1CA1D-5CFF-42C2-BA3A-CF8DC070058A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{875BDDB3-FA36-4B65-A96E-D350CE0C95EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{875BDDB3-FA36-4B65-A96E-D350CE0C95EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{875BDDB3-FA36-4B65-A96E-D350CE0C95EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8B1CA1D-5CFF-42C2-BA3A-CF8DC070058A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8B1CA1D-5CFF-42C2-BA3A-CF8DC070058A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8B1CA1D-5CFF-42C2-BA3A-CF8DC070058A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8B1CA1D-5CFF-42C2-BA3A-CF8DC070058A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -18,8 +18,8 @@ namespace WebTextEditor.DAL.Repositories
         /// <summary>
         ///     Removes a content.
         /// </summary>
-        /// <param name="collaborator">Content.</param>
-        Task RemoveAsync(DocumentContentEntity collaborator);
+        /// <param name="content">Content.</param>
+        Task RemoveAsync(DocumentContentEntity content);
 
         /// <summary>
         ///     Retrieves a document content.

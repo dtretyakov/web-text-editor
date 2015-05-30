@@ -31,6 +31,11 @@
                 Dependency injection initializer.
             </summary>
         </member>
+        <member name="M:WebTextEditor.IocConfig.#cctor">
+            <summary>
+                Performs type data initialization.
+            </summary>
+        </member>
         <member name="M:WebTextEditor.IocConfig.Initialize">
             <summary>
                 Initialize the container and register it as MVC3 Dependency Resolver.
