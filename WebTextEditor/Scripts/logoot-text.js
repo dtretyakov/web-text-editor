@@ -47,12 +47,15 @@
         var ids = logoot.ids;
         agent || (agent = this.agent);
         var text = LogootText.filterText(chars);
+        var data = [];
 
         for (var i = 0, l = text.length; i < l; i++) {
             var id = logoot.genId(ids[index + i], ids[index + i + 1], agent);
             var op = logoot.ins(id, text.charAt(i), agent, index + i);
-            this.emit("logoot.op", op);
+            data.push({ id: op.id, value: op.atom });
         }
+
+        this.emit("logoot.ops", ["ins", data]);
 
         var str = this.str;
         this.str = str.substring(0, index) + text + str.substring(index, str.length);
@@ -62,17 +65,24 @@
      * Deletes the character in the string located at `index`. The update
      * implicitly records that `agent` authored the update.
      *
-     * @param {Number} index
+     * @param {Number} first    
+     * @param {Number} last
      * @param {String} agent
      */
-    LogootText.prototype.del = function(index, agent) {
+    LogootText.prototype.del = function(first, last, agent) {
         var logoot = this.logoot;
-        var id = logoot.ids[index + 1]; // offset of 1 for Logoot.first
-        var op = logoot.del(id, agent || this.agent, index + 1);
-        this.emit("logoot.op", op);
+        var data = [];
+
+        for (var end = last || first; first < end; end--) {
+            var id = logoot.ids[end]; // offset of 1 for Logoot.first
+            var op = logoot.del(id, agent || this.agent, end);
+            data.unshift({ id: op.id });
+        }
+
+        this.emit("logoot.ops", ["del", data]);
 
         var str = this.str;
-        this.str = str.substring(0, index) + str.substring(index + 1, str.length);
+        this.str = str.substring(0, first) + str.substring(last, str.length);
     };
 
     /**
@@ -82,9 +92,9 @@
      */
     LogootText.prototype.applyOp = function(op) {
         // This will fire 'ins' and 'del' events, which are handled via the event
-        // handlers decalred in our constructor `LogootText`. The event handlers take
+        // handlers declared in our constructor `LogootText`. The event handlers take
         // care of updating `this.str`
-        this.logoot.applyOp(op);
+        return this.logoot.applyOp(op);
     };
 
     /**

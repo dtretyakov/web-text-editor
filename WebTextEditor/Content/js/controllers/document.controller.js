@@ -13,13 +13,12 @@
         "documentsHubService",
         "collaboratorService",
         "textService",
-        "inputElementService",
         "ModalService"
     ];
 
     function DocumentController(
         $scope, $routeParams, $location, documentsService, documentsHubService,
-        collaboratorService, textService, inputService, modalService) {
+        collaboratorService, textService, modalService) {
 
         var vm = this;
 
@@ -50,8 +49,8 @@
             documentsHubService.client.addCollaborator = collaboratorService.addOrUpdate;
             documentsHubService.client.removeCollaborator = collaboratorService.remove;
             documentsHubService.client.caretPosition = collaboratorService.addOrUpdate;
-            documentsHubService.client.addChar = textService.addCharacter;
-            documentsHubService.client.removeChar = textService.removeCharacter;
+            documentsHubService.client.addChars = textService.addCharacters;
+            documentsHubService.client.removeChars = textService.removeCharacters;
             documentsHubService.client.leaveDocument = leaveDocument;
             documentsHubService.connect().then(configureHubConnection);
         }
@@ -92,12 +91,8 @@
             var agentId = collaboratorService.findAgentId(vm.connectionId);
 
             // Construct CRDT
-            var logoot = textService.createLogoot(document.content);
-            logoot.on("ins", insertDocumentCharacter);
-            logoot.on("del", removeDocumentCharacter);
-
-            var text = textService.initialize(agentId, logoot);
-            text.on("logoot.op", sendOperation);
+            var text = textService.initialize(document.content, agentId, vm.input.element);
+            text.on("logoot.ops", sendOperations);
 
             vm.text = text.str;
             vm.isLoading = false;
@@ -105,16 +100,28 @@
 
         /**
          * Sends an operation into downstream.
-         * @param {array} op - operation data.
+         * @param {array} ops - operations data.
          */
-        function sendOperation(op) {
-            var operation = op[0];
-            var charId = op[1].join(".");
+        function sendOperations(ops) {
+            var operation = ops[0];
+            var action = null;
 
             if (operation === "ins") {
-                hubConnection.addChar(documentId, charId, op[2]);
+                action = hubConnection.addChars;
             } else if (operation === "del") {
-                hubConnection.removeChar(documentId, charId);
+                action = hubConnection.removeChars;
+            }
+
+            if (!action) {
+                return;
+            }
+
+            // send data as chunks
+            var chars = ops[1];
+            var chunkSize = 128;
+            for (var i = 0, l = chars.length; i < l; i += chunkSize) {
+                var chunk = chars.slice(i, i + chunkSize);
+                action(documentId, chunk);
             }
         }
 
@@ -149,25 +156,6 @@
          */
         function leaveDocument() {
             $location.path("/documents");
-        }
-
-        /**
-         * Inserts a new text fragment into the document.
-         * @param {number} index - position.
-         * @param {string} text - text.
-         */
-        function insertDocumentCharacter(index, text) {
-            inputService.replaceText(vm.input.element, index, index, text);
-            $scope.$broadcast("elastic:adjust");
-        }
-
-        /**
-         * Removes document text fragment.
-         * @param {number} index - position.
-         */
-        function removeDocumentCharacter(index) {
-            inputService.replaceText(vm.input.element, index, index + 1, "");
-            $scope.$broadcast("elastic:adjust");
         }
     }
 })();

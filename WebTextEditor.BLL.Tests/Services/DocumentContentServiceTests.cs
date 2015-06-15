@@ -6,7 +6,7 @@ using WebTextEditor.BLL.Services;
 using WebTextEditor.BLL.Tests.Mocks;
 using WebTextEditor.DAL.Models;
 using WebTextEditor.DAL.Repositories;
-using WebTextEditor.Domain.DTO; 
+using WebTextEditor.Domain.DTO;
 using Xunit;
 
 namespace WebTextEditor.BLL.Tests.Services
@@ -40,6 +40,39 @@ namespace WebTextEditor.BLL.Tests.Services
             Assert.Equal(content.Value, addedEntity.Value);
 
             documentContentRepositoryMock.Verify(p => p.AddAsync(It.IsAny<DocumentContentEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task AddContentsTest()
+        {
+            var content = new DocumentContent
+            {
+                DocumentId = "documentId",
+                Id = "id",
+                Value = "value"
+            };
+
+            var contents = new List<DocumentContent> {content};
+
+            List<DocumentContentEntity> addedEntities = null;
+
+            var documentContentRepositoryMock = new Mock<IDocumentContentRepository>();
+            documentContentRepositoryMock.Setup(p => p.AddAsync(It.IsAny<IEnumerable<DocumentContentEntity>>()))
+                .Callback((IEnumerable<DocumentContentEntity> e) => { addedEntities = e.ToList(); })
+                .Returns(() => Task.FromResult(0));
+
+            var contentService = new DocumentContentService(documentContentRepositoryMock.Object, MockObjects.GetMapper());
+
+            await contentService.AddAsync(contents);
+
+            Assert.Equal(1, addedEntities.Count);
+
+            var addedEntity = addedEntities[0];
+            Assert.Equal(content.DocumentId, addedEntity.DocumentId);
+            Assert.Equal(content.Id, addedEntity.Id);
+            Assert.Equal(content.Value, addedEntity.Value);
+
+            documentContentRepositoryMock.Verify(p => p.AddAsync(It.IsAny<IEnumerable<DocumentContentEntity>>()), Times.Once);
         }
 
         [Fact]
@@ -100,6 +133,40 @@ namespace WebTextEditor.BLL.Tests.Services
             Assert.Equal(content.Value, removedEntity.Value);
 
             documentContentRepositoryMock.Verify(p => p.RemoveAsync(It.IsAny<DocumentContentEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task RemoveContentsTest()
+        {
+            var content = new DocumentContent
+            {
+                DocumentId = "documentId",
+                Id = "id",
+                Value = "value"
+            };
+
+            var contents = new List<DocumentContent> {content};
+
+            List<DocumentContentEntity> removedEntities = null;
+
+            var documentContentRepositoryMock = new Mock<IDocumentContentRepository>();
+            documentContentRepositoryMock.Setup(p => p.RemoveAsync(It.IsAny<IEnumerable<DocumentContentEntity>>()))
+                .Callback((IEnumerable<DocumentContentEntity> entities) => { removedEntities = entities.ToList(); })
+                .Returns(() => Task.FromResult(0));
+
+
+            var contentService = new DocumentContentService(documentContentRepositoryMock.Object, MockObjects.GetMapper());
+
+            await contentService.RemoveAsync(contents);
+
+            Assert.Equal(1, removedEntities.Count);
+
+            var removedEntity = removedEntities[0];
+            Assert.Equal(content.DocumentId, removedEntity.DocumentId);
+            Assert.Equal(content.Id, removedEntity.Id);
+            Assert.Equal(content.Value, removedEntity.Value);
+
+            documentContentRepositoryMock.Verify(p => p.RemoveAsync(It.IsAny<IEnumerable<DocumentContentEntity>>()), Times.Once);
         }
 
         [Fact]

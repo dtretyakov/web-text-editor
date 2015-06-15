@@ -20,16 +20,6 @@ namespace WebTextEditor.DAL.Sql.Repositories
             }
         }
 
-        public async Task RemoveAllAsync(string documentId)
-        {
-            using (var db = new DataContext())
-            {
-                await db.Database.ExecuteSqlCommandAsync(
-                    "DELETE FROM DocumentContent WHERE DocumentId = {0}",
-                    documentId);
-            }
-        }
-
         public async Task AddAsync(DocumentContentEntity content)
         {
             using (var db = new DataContext())
@@ -40,6 +30,15 @@ namespace WebTextEditor.DAL.Sql.Repositories
             }
         }
 
+        public async Task AddAsync(IEnumerable<DocumentContentEntity> contents)
+        {
+            using (var db = new DataContext())
+            {
+                db.DocumentContents.AddRange(contents);
+                await db.SaveChangesAsync();
+            }
+        }
+
         public async Task RemoveAsync(DocumentContentEntity content)
         {
             using (var db = new DataContext())
@@ -47,6 +46,25 @@ namespace WebTextEditor.DAL.Sql.Repositories
                 await db.Database.ExecuteSqlCommandAsync(
                     "DELETE FROM DocumentContent WHERE DocumentId = {0} AND Id = {1}",
                     content.DocumentId, content.Id);
+            }
+        }
+
+        public async Task RemoveAsync(IEnumerable<DocumentContentEntity> contents)
+        {
+            using (var db = new DataContext())
+            {
+                db.DocumentContents.RemoveRange(contents);
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public async Task RemoveAllAsync(string documentId)
+        {
+            using (var db = new DataContext())
+            {
+                await db.Database.ExecuteSqlCommandAsync(
+                    "DELETE FROM DocumentContent WHERE DocumentId = {0}",
+                    documentId);
             }
         }
     }

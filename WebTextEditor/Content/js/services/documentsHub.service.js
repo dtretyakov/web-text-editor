@@ -30,11 +30,11 @@
             documentsHub.client.caretPosition = function () {
                 executeFunction(clientFunctions.caretPosition, arguments);
             }
-            documentsHub.client.addChar = function () {
-                executeFunction(clientFunctions.addChar, arguments);
+            documentsHub.client.addChars = function () {
+                executeFunction(clientFunctions.addChars, arguments);
             };
-            documentsHub.client.removeChar = function () {
-                executeFunction(clientFunctions.removeChar, arguments);
+            documentsHub.client.removeChars = function () {
+                executeFunction(clientFunctions.removeChars, arguments);
             };
             documentsHub.client.leaveDocument = function () {
                 executeFunction(clientFunctions.leaveDocument, arguments);
@@ -47,8 +47,8 @@
                     joinDocument: documentsHub.server.joinDocument,
                     leaveDocument: documentsHub.server.leaveDocument,
                     setCaret: documentsHub.server.setCaret,
-                    addChar: documentsHub.server.addChar,
-                    removeChar: documentsHub.server.removeChar
+                    addChars: documentsHub.server.addChars,
+                    removeChars: documentsHub.server.removeChars
                 };
 
                 deferred.resolve(result);

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -97,43 +98,43 @@ namespace WebTextEditor.Hubs
         }
 
         /// <summary>
-        ///     Notifies group members about new document charater.
+        ///     Notifies group members about new document charaters.
         /// </summary>
         /// <param name="documentId">Document identifier.</param>
-        /// <param name="charId">Charater identifier.</param>
-        /// <param name="value">Character value.</param>
-        public Task AddChar(string documentId, string charId, string value)
+        /// <param name="characters">Sequence of charaters.</param>
+        public Task AddChars(string documentId, IList<DocumentContent> characters)
         {
-            Clients.OthersInGroup(documentId).addChar(charId, value);
+            Clients.OthersInGroup(documentId).addChars(characters);
 
-            var content = new DocumentContent
+            foreach (var character in characters)
             {
-                DocumentId = documentId,
-                Id = charId,
-                Value = value
-            };
+                character.DocumentId = documentId;
+            }
 
-            return _contentService.AddAsync(content);
+            return _contentService.AddAsync(characters);
         }
 
         /// <summary>
-        ///     Notifies group members about document charater deletion.
+        ///     Notifies group members about document charaters deletion.
         /// </summary>
         /// <param name="documentId">Document identifier.</param>
-        /// <param name="charId">Character identifier.</param>
-        public Task RemoveChar(string documentId, string charId)
+        /// <param name="characters">Characters sequence.</param>
+        public Task RemoveChars(string documentId, IList<DocumentContent> characters)
         {
-            Clients.OthersInGroup(documentId).removeChar(charId);
+            Clients.OthersInGroup(documentId).removeChars(characters);
 
-            var content = new DocumentContent
+            foreach (var character in characters)
             {
-                DocumentId = documentId,
-                Id = charId
-            };
+                character.DocumentId = documentId;
+            }
 
-            return _contentService.RemoveAsync(content);
+            return _contentService.RemoveAsync(characters);
         }
 
+        /// <summary>
+        ///     Handles collaborator disconnection.
+        /// </summary>
+        /// <param name="stopCalled">Defines whether connection was gracefully closed.</param>
         public override async Task OnDisconnected(bool stopCalled)
         {
             var connectionId = Context.ConnectionId;

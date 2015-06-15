@@ -6,33 +6,34 @@
         .factory("textService", textService);
 
     textService.$inject = [
+        "$rootScope",
         "Logoot",
         "LogootText",
         "inputElementService",
         "collaboratorService"
     ];
 
-    function textService(Logoot, LogootText, inputService, collaboratorService) {
+    function textService($scope, Logoot, LogootText, inputService, collaboratorService) {
 
         var text = undefined;
+        var input = undefined;
 
         return {
-            createLogoot: createLogoot,
             initialize: initialize,
             cut: cut,
             paste: paste,
             keypress: keypress,
             keydown: keydown,
-            addCharacter: addCharacter,
-            removeCharacter: removeCharacter
+            addCharacters: addCharacters,
+            removeCharacters: removeCharacters
         };
 
-        function createLogoot(atoms) {
-            return new Logoot(atoms);
-        }
+        function initialize(atoms, agentId, inputElement) {
+            input = inputElement;
 
-        function initialize(agentId, logoot) {
+            var logoot = new Logoot(atoms);
             text = new LogootText(agentId, logoot);
+
             return text;
         }
 
@@ -127,22 +128,59 @@
         }
 
         /**
-         * Adds a character into the text structure.
-         * @param {string} id - identifier.
-         * @param {string} value - character.
+         * Adds a characters into the text structure.
+         * @param {array} values - character values.
          */
-        function addCharacter(id, value) {
+        function addCharacters(values) {
             if (!text) return;
-            text.applyOp(["ins", id, value]);
+
+            var ops = values.reduce(function (result, value) {
+                var op = text.applyOp(["ins", value.id, value.value]);
+                var last = result.length > 0 ? result[result.length - 1] : undefined;
+
+                if (last == undefined || op.index !== last.index + last.text.length) {
+                    last = { text: "", index: op.index };
+                    result.push(last);
+                }
+
+                last.text += op.atom;
+
+                return result;
+            }, []);
+
+            ops.forEach(function(op) {
+                inputService.replaceText(input, op.index, op.index, op.text);
+            });
+
+            $scope.$broadcast("elastic:adjust");
         }
 
         /**
-         * Removes a character from the text structure.
-         * @param {string} id - identifier.
+         * Removes a characters from the text structure.
+         * @param {array} values - character values.
          */
-        function removeCharacter(id) {
+        function removeCharacters(values) {
             if (!text) return;
-            text.applyOp(["del", id]);
+
+            var ops = values.reduce(function(result, value) {
+                var op = text.applyOp(["del", value.id]);
+                var last = result.length > 0 ? result[result.length - 1] : undefined;
+
+                if (last == undefined || op.index !== last.index) {
+                    last = { index: op.index, length: 0 };
+                    result.push(last);
+                }
+
+                last.length++;
+
+                return result;
+            }, []);
+
+            ops.forEach(function(op) {
+                inputService.replaceText(input, op.index, op.index + op.length, "");
+            });
+
+            $scope.$broadcast("elastic:adjust");
         }
 
         /**
@@ -161,8 +199,8 @@
                 prevValue: text.str.substring(start, end)
             };
 
-            for (var len = end - start + 1; --len;) {
-                text.del(start);
+            if (start < end) {
+                text.del(start, end);
             }
 
             if (value.length > 0) {

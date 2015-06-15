@@ -53,11 +53,12 @@
             index = indexOfGreatestLessThan(ids, id, compare);
         }
         ids.splice(index + 1, 0, id);
-        this.atoms[serializeId(id)] = atom;
+        var serializedId = serializeId(id);
+        this.atoms[serializedId] = atom;
         if (arguments.length < 4) {
             this.emit("ins", index, atom);
         }
-        return ["ins", id, atom, agent];
+        return { index: index, id: serializedId, atom: atom };
     };
 
     /**
@@ -74,11 +75,12 @@
         var ids = this.ids;
         indexOfId || (indexOfId = indexOf(ids, id, compare));
         ids.splice(indexOfId, 1);
-        delete this.atoms[serializeId(id)];
+        var serializedId = serializeId(id);
+        delete this.atoms[serializedId];
         if (arguments.length < 3) {
             this.emit("del", indexOfId - 1);
         }
-        return ["del", id, agent];
+        return { index: indexOfId - 1, id: serializedId };
     };
 
     /**
@@ -91,7 +93,7 @@
         if (typeof args[0] == "string") {
             args[0] = deserializeId(args[0]);
         }
-        this[op[0]].apply(this, args);
+        return this[op[0]].apply(this, args);
     };
 
     /**

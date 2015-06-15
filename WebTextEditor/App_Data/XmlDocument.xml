@@ -100,7 +100,7 @@
         <member name="T:WebTextEditor.Areas.HelpPage.HelpPageConfig">
             <summary>
                 Use this class to customize the Help Page.
-                For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the
+                For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider" /> to supply the
                 documentation
                 or you can provide the samples for the requests/responses.
             </summary>
@@ -268,7 +268,7 @@
         </member>
         <member name="T:WebTextEditor.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
             <summary>
-                Use this attribute to change the name of the <see cref="T:WebTextEditor.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
+                Use this attribute to change the name of the <see cref="T:WebTextEditor.Areas.HelpPage.ModelDescriptions.ModelDescription" /> generated for a type.
             </summary>
         </member>
         <member name="T:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel">
@@ -278,17 +278,17 @@
         </member>
         <member name="M:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
             <summary>
-                Initializes a new instance of the <see cref="T:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+                Initializes a new instance of the <see cref="T:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel" /> class.
             </summary>
         </member>
         <member name="P:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
             <summary>
-                Gets or sets the <see cref="P:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
+                Gets or sets the <see cref="P:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription" /> that describes the API.
             </summary>
         </member>
         <member name="P:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel.UriParameters">
             <summary>
-                Gets or sets the <see cref="T:WebTextEditor.Areas.HelpPage.ModelDescriptions.ParameterDescription"/> collection that describes the URI parameters for the API.
+                Gets or sets the <see cref="T:WebTextEditor.Areas.HelpPage.ModelDescriptions.ParameterDescription" /> collection that describes the URI parameters for the API.
             </summary>
         </member>
         <member name="P:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel.RequestDocumentation">
@@ -298,7 +298,7 @@
         </member>
         <member name="P:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel.RequestModelDescription">
             <summary>
-                Gets or sets the <see cref="T:WebTextEditor.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the request body.
+                Gets or sets the <see cref="T:WebTextEditor.Areas.HelpPage.ModelDescriptions.ModelDescription" /> that describes the request body.
             </summary>
         </member>
         <member name="P:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel.RequestBodyParameters">
@@ -308,7 +308,7 @@
         </member>
         <member name="P:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel.ResourceDescription">
             <summary>
-                Gets or sets the <see cref="T:WebTextEditor.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the resource.
+                Gets or sets the <see cref="T:WebTextEditor.Areas.HelpPage.ModelDescriptions.ModelDescription" /> that describes the resource.
             </summary>
         </member>
         <member name="P:WebTextEditor.Areas.HelpPage.Models.HelpPageApiModel.ResourceProperties">
@@ -340,6 +340,31 @@
             <summary>
             Initializes a new instance of the <see cref="T:WebTextEditor.Areas.HelpPage.HelpPageSampleGenerator"/> class.
             </summary>
+        </member>
+        <member name="P:WebTextEditor.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
+            <summary>
+            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:WebTextEditor.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
+            <summary>
+            Gets the objects that are used directly as samples for certain actions.
+            </summary>
+        </member>
+        <member name="P:WebTextEditor.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="P:WebTextEditor.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories">
+            <summary>
+            Gets factories for the objects that the supported formatters will serialize as samples. Processed in order,
+            stopping when the factory successfully returns a non-<see langref="null"/> object.
+            </summary>
+            <remarks>
+            Collection includes just <see cref="M:WebTextEditor.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)"/> initially. Use
+            <code>SampleObjectFactories.Insert(0, func)</code> to provide an override and
+            <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
         </member>
         <member name="M:WebTextEditor.Areas.HelpPage.HelpPageSampleGenerator.GetSampleRequests(System.Web.Http.Description.ApiDescription)">
             <summary>
@@ -413,31 +438,6 @@
             <param name="type">The type.</param>
             <param name="mediaType">Type of the media.</param>
             <returns></returns>
-        </member>
-        <member name="P:WebTextEditor.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
-            <summary>
-            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
-            </summary>
-        </member>
-        <member name="P:WebTextEditor.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
-            <summary>
-            Gets the objects that are used directly as samples for certain actions.
-            </summary>
-        </member>
-        <member name="P:WebTextEditor.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
-            <summary>
-            Gets the objects that are serialized as samples by the supported formatters.
-            </summary>
-        </member>
-        <member name="P:WebTextEditor.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories">
-            <summary>
-            Gets factories for the objects that the supported formatters will serialize as samples. Processed in order,
-            stopping when the factory successfully returns a non-<see langref="null"/> object.
-            </summary>
-            <remarks>
-            Collection includes just <see cref="M:WebTextEditor.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)"/> initially. Use
-            <code>SampleObjectFactories.Insert(0, func)</code> to provide an override and
-            <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
         </member>
         <member name="T:WebTextEditor.Areas.HelpPage.HelpPageSampleKey">
             <summary>
@@ -659,20 +659,25 @@
             <param name="documentId">Document identifier.</param>
             <param name="caretPosition">Caret position.</param>
         </member>
-        <member name="M:WebTextEditor.Hubs.DocumentsHub.AddChar(System.String,System.String,System.String)">
+        <member name="M:WebTextEditor.Hubs.DocumentsHub.AddChars(System.String,System.Collections.Generic.IList{WebTextEditor.Domain.DTO.DocumentContent})">
             <summary>
-                Notifies group members about new document charater.
+                Notifies group members about new document charaters.
             </summary>
             <param name="documentId">Document identifier.</param>
-            <param name="charId">Charater identifier.</param>
-            <param name="value">Character value.</param>
+            <param name="characters">Sequence of charaters.</param>
         </member>
-        <member name="M:WebTextEditor.Hubs.DocumentsHub.RemoveChar(System.String,System.String)">
+        <member name="M:WebTextEditor.Hubs.DocumentsHub.RemoveChars(System.String,System.Collections.Generic.IList{WebTextEditor.Domain.DTO.DocumentContent})">
             <summary>
-                Notifies group members about document charater deletion.
+                Notifies group members about document charaters deletion.
             </summary>
             <param name="documentId">Document identifier.</param>
-            <param name="charId">Character identifier.</param>
+            <param name="characters">Characters sequence.</param>
+        </member>
+        <member name="M:WebTextEditor.Hubs.DocumentsHub.OnDisconnected(System.Boolean)">
+            <summary>
+                Handles collaborator disconnection.
+            </summary>
+            <param name="stopCalled">Defines whether connection was gracefully closed.</param>
         </member>
         <member name="T:WebTextEditor.Infrastructure.SignalrContractResolver">
             <summary>

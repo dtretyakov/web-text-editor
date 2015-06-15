@@ -22,9 +22,19 @@ namespace WebTextEditor.DAL.Tables.Repositories
             return _context.AddAsync(content);
         }
 
+        public Task AddAsync(IEnumerable<DocumentContentEntity> contents)
+        {
+            return _context.AddAsync(contents);
+        }
+
         public Task RemoveAsync(DocumentContentEntity content)
         {
             return _context.RemoveAsync(content);
+        }
+
+        public Task RemoveAsync(IEnumerable<DocumentContentEntity> contents)
+        {
+            return _context.RemoveAsync(contents);
         }
 
         public Task<List<DocumentContentEntity>> GetAllAsync(string documentId)

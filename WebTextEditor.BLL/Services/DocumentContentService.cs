@@ -21,16 +21,30 @@ namespace WebTextEditor.BLL.Services
 
         public Task AddAsync(DocumentContent content)
         {
-            var entity = _mapper.Map<DocumentContent, DocumentContentEntity>(content);
+            var entity = _mapper.Map<DocumentContentEntity>(content);
 
             return _contentRepository.AddAsync(entity);
         }
 
+        public Task AddAsync(IEnumerable<DocumentContent> contents)
+        {
+            var entities = contents.Select(p => _mapper.Map<DocumentContentEntity>(p));
+
+            return _contentRepository.AddAsync(entities);
+        }
+
         public Task RemoveAsync(DocumentContent content)
         {
-            var entity = _mapper.Map<DocumentContent, DocumentContentEntity>(content);
+            var entity = _mapper.Map<DocumentContentEntity>(content);
 
             return _contentRepository.RemoveAsync(entity);
+        }
+
+        public Task RemoveAsync(IEnumerable<DocumentContent> contents)
+        {
+            var entities = contents.Select(p => _mapper.Map<DocumentContentEntity>(p));
+
+            return _contentRepository.RemoveAsync(entities);
         }
 
         public async Task<Dictionary<string, string>> GetCurrentContentAsync(string documentId)
