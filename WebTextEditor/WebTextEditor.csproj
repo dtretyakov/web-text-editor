@@ -288,6 +288,7 @@
     <Compile Include="Infrastructure\SignalrContractResolver.cs" />
     <Compile Include="Infrastructure\SimpleInjectorResolver.cs" />
     <Compile Include="Infrastructure\CustomExceptionHandler.cs" />
+    <Compile Include="Infrastructure\ValidateArgumentsAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

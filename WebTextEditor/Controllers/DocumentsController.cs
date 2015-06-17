@@ -5,6 +5,7 @@ using Microsoft.AspNet.SignalR.Infrastructure;
 using WebTextEditor.BLL.Services;
 using WebTextEditor.Domain.DTO;
 using WebTextEditor.Hubs;
+using WebTextEditor.Infrastructure;
 
 namespace WebTextEditor.Controllers
 {
@@ -12,6 +13,7 @@ namespace WebTextEditor.Controllers
     ///     Provides a document management facilities.
     /// </summary>
     [Authorize]
+    [ValidateArguments]
     [RoutePrefix("api/documents")]
     public sealed class DocumentsController : ApiController
     {

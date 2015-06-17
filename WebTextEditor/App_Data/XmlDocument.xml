@@ -719,5 +719,32 @@
                 Provides response messages according to exception type.
             </summary>
         </member>
+        <member name="M:WebTextEditor.Infrastructure.CustomExceptionHandler.Handle(System.Web.Http.ExceptionHandling.ExceptionHandlerContext)">
+            <summary>
+                Executes exception handler.
+            </summary>
+            <param name="context">Context.</param>
+        </member>
+        <member name="T:WebTextEditor.Infrastructure.ValidateArgumentsAttribute">
+            <summary>
+                Performs arguments validation of controller methods.
+            </summary>
+        </member>
+        <member name="M:WebTextEditor.Infrastructure.ValidateArgumentsAttribute.#ctor">
+            <summary>
+                Constructor.
+            </summary>
+        </member>
+        <member name="P:WebTextEditor.Infrastructure.ValidateArgumentsAttribute.BadRequestText">
+            <summary>
+                Error text message.
+            </summary>
+        </member>
+        <member name="M:WebTextEditor.Infrastructure.ValidateArgumentsAttribute.OnActionExecuting(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+                Executes arguments validation.
+            </summary>
+            <param name="actionContext">Context.</param>
+        </member>
     </members>
 </doc>

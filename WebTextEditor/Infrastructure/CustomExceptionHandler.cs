@@ -10,6 +10,10 @@ namespace WebTextEditor.Infrastructure
     /// </summary>
     public class CustomExceptionHandler : ExceptionHandler
     {
+        /// <summary>
+        ///     Executes exception handler.
+        /// </summary>
+        /// <param name="context">Context.</param>
         public override void Handle(ExceptionHandlerContext context)
         {
             var exception = context.Exception;

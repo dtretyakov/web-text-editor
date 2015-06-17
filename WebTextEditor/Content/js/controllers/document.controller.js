@@ -88,11 +88,14 @@
             vm.document = document;
 
             collaboratorService.addList(document.collaborators);
+            delete document.collaborators;
+
             var agentId = collaboratorService.findAgentId(vm.connectionId);
 
             // Construct CRDT
             var text = textService.initialize(document.content, agentId, vm.input.element);
             text.on("logoot.ops", sendOperations);
+            delete document.content;
 
             vm.text = text.str;
             vm.isLoading = false;
