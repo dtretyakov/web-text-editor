@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using WebTextEditor.DAL.Models;
@@ -47,7 +48,7 @@ namespace WebTextEditor.BLL.Services
             await Task.WhenAll(contentTask, collaboratorsTask);
 
             // Construct final data
-            var documentState = _mapper.Map<DocumentEntity, DocumentState>(document);
+            var documentState = _mapper.Map<DocumentState>(document);
             documentState.Content = contentTask.Result;
             documentState.Collaborators = collaboratorsTask.Result;
 
@@ -58,7 +59,7 @@ namespace WebTextEditor.BLL.Services
         {
             var documents = await _documentsRepository.GetAllAsync();
 
-            return _mapper.Map<List<DocumentEntity>, List<Document>>(documents);
+            return _mapper.Map<List<Document>>(documents.OrderByDescending(p => p.Created));
         }
 
         public async Task<Document> AddAsync(string userId)
@@ -73,7 +74,7 @@ namespace WebTextEditor.BLL.Services
 
             await _documentsRepository.AddAsync(document);
 
-            return _mapper.Map<DocumentEntity, Document>(document);
+            return _mapper.Map<Document>(document);
         }
 
         public async Task DeleteAsync(string userId, string documentId)
