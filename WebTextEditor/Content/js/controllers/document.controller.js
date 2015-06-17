@@ -104,24 +104,11 @@
          */
         function sendOperations(ops) {
             var operation = ops[0];
-            var action = null;
 
             if (operation === "ins") {
-                action = hubConnection.addChars;
+                hubConnection.addChars(documentId, ops[1]);
             } else if (operation === "del") {
-                action = hubConnection.removeChars;
-            }
-
-            if (!action) {
-                return;
-            }
-
-            // send data as chunks
-            var chars = ops[1];
-            var chunkSize = 128;
-            for (var i = 0, l = chars.length; i < l; i += chunkSize) {
-                var chunk = chars.slice(i, i + chunkSize);
-                action(documentId, chunk);
+                hubConnection.removeChars(documentId, ops[1]);
             }
         }
 

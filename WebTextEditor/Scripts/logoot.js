@@ -125,11 +125,9 @@
 
         var depth = 0;
         var id = [];
+        var base = LAST[0];
 
         while (true) {
-            // base depends on depth of identifiers
-            var base = Math.pow(2, POWER + depth);
-
             var min = from[0] || 0;
             var max = to[0] || base;
 
@@ -142,6 +140,9 @@
 
             from = from.slice(3);
             to = to.slice(3);
+
+            // base depends on depth of identifiers
+            base *= 2;
             depth++;
         }
     };

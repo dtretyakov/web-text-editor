@@ -1,14 +1,16 @@
 (function(Logoot, EventEmitter, window) {
 
     /**
-     * @param @optional {String} agent
-     * @param @optional {Logoot} logoot
+     * @param @optional {String} agent indetifier
+     * @param @optional {Logoot} logoot instance
+     * @param @optional {Number} chunkSize limits number of ops in event data
      */
-    function LogootText(agent, logoot) {
+    function LogootText(agent, logoot, chunkSize) {
         EventEmitter.apply(this);
 
         this.agent = agent;
         this.logoot = logoot = logoot || new Logoot;
+        this.chunkSize = chunkSize || 100;
         var self = this;
 
         logoot.on("ins", function(index, chr) {
@@ -45,6 +47,7 @@
     LogootText.prototype.ins = function(index, chars, agent) {
         var logoot = this.logoot;
         var ids = logoot.ids;
+        var chunkSize = this.chunkSize;
         agent || (agent = this.agent);
         var text = LogootText.filterText(chars);
         var data = [];
@@ -60,10 +63,18 @@
         for (var i = 0, len = text.length; i < len; i++) {
             var op = logoot.ins(id, text.charAt(i), agent, index + i);
             data.push({ id: op.id, value: op.atom });
-            id = logoot.genId(id, maxId, agent);
-        };
 
-        this.emit("logoot.ops", ["ins", data]);
+            if (data.length === chunkSize) {
+                this.emit("logoot.ops", ["ins", data]);
+                data = [];
+            }
+
+            id = logoot.genId(id, maxId, agent);
+        }
+
+        if (data.length > 0) {
+            this.emit("logoot.ops", ["ins", data]);
+        }
 
         var str = this.str;
         this.str = str.substring(0, index) + text + str.substring(index, str.length);
@@ -79,15 +90,23 @@
      */
     LogootText.prototype.del = function(first, last, agent) {
         var logoot = this.logoot;
+        var chunkSize = this.chunkSize;
         var data = [];
 
         for (var end = last || first; first < end; end--) {
             var id = logoot.ids[end]; // offset of 1 for Logoot.first
             var op = logoot.del(id, agent || this.agent, end);
             data.unshift({ id: op.id });
+
+            if (data.length === chunkSize) {
+                this.emit("logoot.ops", ["del", data]);
+                data = [];
+            }
         }
 
-        this.emit("logoot.ops", ["del", data]);
+        if (data.length > 0) {
+            this.emit("logoot.ops", ["del", data]);
+        }
 
         var str = this.str;
         this.str = str.substring(0, first) + str.substring(last, str.length);
