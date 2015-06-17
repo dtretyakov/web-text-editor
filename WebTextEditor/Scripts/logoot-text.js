@@ -49,11 +49,19 @@
         var text = LogootText.filterText(chars);
         var data = [];
 
-        for (var i = 0, l = text.length; i < l; i++) {
-            var id = logoot.genId(ids[index + i], ids[index + i + 1], agent);
+        // characters should be placed within one sequence
+        // id composition prevents shuffling with collaborators
+        var id = logoot.genId(ids[index], ids[index + 1], agent);
+        var nextIndex = id.length - 3;
+        var maxId = id.slice(0, nextIndex)
+            .concat([id[nextIndex] + 1])
+            .concat(id.slice(nextIndex + 1));
+
+        for (var i = 0, len = text.length; i < len; i++) {
             var op = logoot.ins(id, text.charAt(i), agent, index + i);
             data.push({ id: op.id, value: op.atom });
-        }
+            id = logoot.genId(id, maxId, agent);
+        };
 
         this.emit("logoot.ops", ["ins", data]);
 
