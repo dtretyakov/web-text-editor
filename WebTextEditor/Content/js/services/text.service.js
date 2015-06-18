@@ -17,6 +17,7 @@
 
         var text = undefined;
         var input = undefined;
+        var deferredOps = [];
 
         return {
             initialize: initialize,
@@ -33,6 +34,14 @@
 
             var logoot = new Logoot(atoms);
             text = new LogootText(agentId, logoot);
+
+            deferredOps.forEach(function(op) {
+                if (op.type === "ins") {
+                    addCharacters(op.values);
+                } else if (op.type === "del") {
+                    removeCharacters(op.values);
+                }
+            });
 
             return text;
         }
@@ -132,7 +141,10 @@
          * @param {array} values - character values.
          */
         function addCharacters(values) {
-            if (!text) return;
+            if (!text) {
+                deferredOps.push({ type: "ins", values: values });
+                return;
+            }
 
             var ops = values.reduce(function (result, value) {
                 var op = text.applyOp(["ins", value.id, value.value]);
@@ -160,7 +172,10 @@
          * @param {array} values - character values.
          */
         function removeCharacters(values) {
-            if (!text) return;
+            if (!text) {
+                deferredOps.push({ type: "del", values: values });
+                return;
+            }
 
             var ops = values.reduce(function(result, value) {
                 var op = text.applyOp(["del", value.id]);
