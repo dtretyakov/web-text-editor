@@ -36,12 +36,10 @@
             text = new LogootText(agentId, logoot);
 
             deferredOps.forEach(function(op) {
-                if (op.type === "ins") {
-                    addCharacters(op.values);
-                } else if (op.type === "del") {
-                    removeCharacters(op.values);
-                }
+                text.applyOp(op);
             });
+
+            deferredOps = [];
 
             return text;
         }
@@ -142,7 +140,9 @@
          */
         function addCharacters(values) {
             if (!text) {
-                deferredOps.push({ type: "ins", values: values });
+                deferredOps.concat(values.map(function(value) {
+                    return ["ins", value.id, value.value];
+                }));
                 return;
             }
 
@@ -175,7 +175,9 @@
          */
         function removeCharacters(values) {
             if (!text) {
-                deferredOps.push({ type: "del", values: values });
+                deferredOps.concat(values.map(function(value) {
+                    return ["del", value.id];
+                }));
                 return;
             }
 

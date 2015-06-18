@@ -78,19 +78,19 @@
      */
     Logoot.prototype.del = function(id, agent, indexOfId) {
         var ids = this.ids;
-        indexOfId || (indexOfId = indexOf(ids, id, compare));
-        if (indexOfId === -1) {
+        var index = indexOfId || indexOf(ids, id, compare);
+        if (index === -1) {
             return undefined;
         }
 
-        ids.splice(indexOfId, 1);
+        ids.splice(index, 1);
         var serializedId = serializeId(id);
         delete this.atoms[serializedId];
         
         if (arguments.length < 3) {
-            this.emit("del", indexOfId - 1);
+            this.emit("del", index - 1);
         }
-        return { index: indexOfId - 1, id: serializedId };
+        return { index: index - 1, id: serializedId };
     };
 
     /**
