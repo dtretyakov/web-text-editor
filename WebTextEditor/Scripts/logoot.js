@@ -51,10 +51,15 @@
         var index = insertAfter;
         if (typeof index == "undefined") {
             index = indexOfGreatestLessThan(ids, id, compare);
+            if (index === -1) {
+                return undefined;
+            }
         }
+
         ids.splice(index + 1, 0, id);
         var serializedId = serializeId(id);
         this.atoms[serializedId] = atom;
+
         if (arguments.length < 4) {
             this.emit("ins", index, atom);
         }
@@ -74,9 +79,14 @@
     Logoot.prototype.del = function(id, agent, indexOfId) {
         var ids = this.ids;
         indexOfId || (indexOfId = indexOf(ids, id, compare));
+        if (indexOfId === -1) {
+            return undefined;
+        }
+
         ids.splice(indexOfId, 1);
         var serializedId = serializeId(id);
         delete this.atoms[serializedId];
+        
         if (arguments.length < 3) {
             this.emit("del", indexOfId - 1);
         }
@@ -228,8 +238,10 @@
         var comp, i, l;
         for (i = 0, l = xs.length; i < l; i++) {
             comp = comparer(xs[i], x);
-            if (comp !== -1) {
+            if (comp > 0) {
                 return i - 1;
+            } else if (comp === 0) {
+                return -1;
             }
         }
         return i;

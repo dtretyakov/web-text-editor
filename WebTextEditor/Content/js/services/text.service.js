@@ -148,14 +148,16 @@
 
             var ops = values.reduce(function (result, value) {
                 var op = text.applyOp(["ins", value.id, value.value]);
-                var last = result.length > 0 ? result[result.length - 1] : undefined;
+                if (op) {
+                    var last = result.length > 0 ? result[result.length - 1] : undefined;
 
-                if (last == undefined || op.index !== last.index + last.text.length) {
-                    last = { text: "", index: op.index };
-                    result.push(last);
+                    if (last == undefined || op.index !== last.index + last.text.length) {
+                        last = { text: "", index: op.index };
+                        result.push(last);
+                    }
+
+                    last.text += op.atom;
                 }
-
-                last.text += op.atom;
 
                 return result;
             }, []);
@@ -179,14 +181,16 @@
 
             var ops = values.reduce(function(result, value) {
                 var op = text.applyOp(["del", value.id]);
-                var last = result.length > 0 ? result[result.length - 1] : undefined;
+                if (op) {
+                    var last = result.length > 0 ? result[result.length - 1] : undefined;
 
-                if (last == undefined || op.index !== last.index) {
-                    last = { index: op.index, length: 0 };
-                    result.push(last);
+                    if (last == undefined || op.index !== last.index) {
+                        last = { index: op.index, length: 0 };
+                        result.push(last);
+                    }
+
+                    last.length++;
                 }
-
-                last.length++;
 
                 return result;
             }, []);
