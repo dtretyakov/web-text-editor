@@ -14,7 +14,7 @@
     var BOUNDARY = 10;
 
     // counter incremented on each insert operation
-    var clock = 0;
+    var clock;
 
     // list of number generators on the specified range
     var numGenerators = [boundaryMinusStrategy, boundaryPlusStrategy];
@@ -33,6 +33,8 @@
         // LAST to denote the begining and ending boundaries of our linear data.
         var ids = getIdentifiers(Object.keys(this.atoms));
         this.ids = [FIRST].concat(ids, [LAST]);
+
+        clock = 0;
     }
 
     Logoot.prototype = Object.create(EventEmitter.prototype);
