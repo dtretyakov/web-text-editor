@@ -6,6 +6,10 @@
 
 Web Text Editor is an application for collaborative text editing. It built on top of ASP.NET framework and uses LSEQ CRDT for resolving conflicting changes between contributors.
 
+## Demo
+
+You can see demonstration at the following link: [dtretyakov.azurewebsites.net](http://dtretyakov.azurewebsites.net)
+
 ## Technologies
 
 ### Server-side
