@@ -92,7 +92,9 @@
          * @param {object} event - keyboard event.
          */
         function getChar(event) {
-            if (event.keyCode === 8 || event.keyCode === 46 || event.ctrlKey) {
+            if (event.ctrlKey ||
+                event.keyCode === 8 ||
+                event.keyCode === 46 && event.charCode === 0) {
                 // Firefix fires keypress events
                 return null;
             } else if (event.which == null) {
